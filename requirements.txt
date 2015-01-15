@@ -3,4 +3,7 @@ django>=1.6.7,<1.7
 django-secure
 django-csp
 django-session-csrf
+django-taggit
+django-autoslug
+django-ckeditor
 nose
