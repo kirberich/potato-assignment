@@ -24,13 +24,21 @@ SECRET_KEY = get_app_config().secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+COMPRESS_ENABLED = False
 TEMPLATE_DEBUG = True
+
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.CSSMinFilter',
+]
+
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter',
+]
 
 # Application definition
 
 INSTALLED_APPS = (
-    'autocomplete_light',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,13 +49,13 @@ INSTALLED_APPS = (
     'csp',
     'djangae.contrib.gauth',
     'djangae',
+    'blog',
+    'compressor',
     'taggit',
     'ckeditor',
-    'blog',
+    'taggit_autosuggest',
 )
 
-STATIC_ROOT = 'static'
-STATIC_URL = '/static/'
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_CONFIGS = {'default': {'toolbar': 'Basic', }, }
 MIDDLEWARE_CLASSES = (
@@ -71,6 +79,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     "session_csrf.context_processor"
+)
+
+TEMPLATE_DIRS = (
+    "potato_assignment/templates"
 )
 
 def check_session_csrf_enabled():
@@ -113,7 +125,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+STATICFILES_DIRS = (
+    'potato_assignment/static',
+)
 
 if DEBUG:
     CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")

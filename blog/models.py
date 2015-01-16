@@ -3,8 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from autoslug.fields import AutoSlugField
 from ckeditor.fields import RichTextField
-from autocomplete_light.contrib.taggit_field import TaggitField
-from autocomplete_light.contrib.taggit_field import TaggitWidget
+from taggit_autosuggest.managers import TaggableManager
 
 
 class Post(models.Model):
@@ -18,7 +17,7 @@ class Post(models.Model):
     text = RichTextField()
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    tags = TaggitField(widget=TaggitWidget('TagAutocomplete'))
+    tags = TaggableManager()
 
     def __unicode__(self):
         return self.title

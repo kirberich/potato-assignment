@@ -23,5 +23,10 @@ indexes:
 
 - kind: taggit_tag
   properties:
+  - name: _idx_icontains_name
+  - name: name
+
+- kind: taggit_tag
+  properties:
   - name: name
   - name: slug

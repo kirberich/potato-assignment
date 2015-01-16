@@ -6,5 +6,8 @@ django-session-csrf
 django-taggit
 django-autoslug
 django-ckeditor
-django-autocomplete-light>2
+django-taggit-autosuggest
+cssmin
+jsmin
+django_compressor
 nose
