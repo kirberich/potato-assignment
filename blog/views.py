@@ -1,4 +1,5 @@
-from django.views.generic import TemplateView
+from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 
 from .models import Post
 
@@ -7,14 +8,17 @@ logging.basicConfig()
 logger = logging.getLogger("blog.console")
 
 
-class HomepageView(TemplateView):
-    """ Homepage view ...
+class HomepageView(ListView):
+    """ Homepage view that get the 3 latest creat posts
     """
-
+    context_object_name = "posts"
     template_name = "blog/homepage.html"
-    queryset = Post.objects.prefetch_related("services")[:3]
+    queryset = Post.objects.order_by('created')[:3]
 
-#    def get_context_data(self, **kwargs):
-#        context = super(HomepageView, self).get_context_data(**kwargs)
-#        context.update({'facility_categories': self.queryset.filter(order__lt=10).order_by('order')})
-#        return context
+
+class PostView(DetailView):
+    """ The detail view of a single post
+    """
+    context_object_name = "post"
+    template_name = "blog/post.html"
+    model = Post

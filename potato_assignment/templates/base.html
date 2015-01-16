@@ -17,6 +17,7 @@
 	{% compress css %}
 	<link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet" />
 	<link href="{{ STATIC_URL }}css/bootstrap-theme.css" rel="stylesheet" />
+	<link href="{{ STATIC_URL }}blog/css/blog.css" rel="stylesheet" />
 	{% endcompress %}
 
 	<!--[if IE]>
@@ -28,6 +29,7 @@
 	{% compress js %}
 	  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.11.2.js"></script>
 	  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.js"></script>
+	  <link href="{{ STATIC_URL }}blog/js/blog.js" rel="stylesheet" />
 	{% endcompress %}
 
 	{% compress js %}
@@ -43,7 +45,7 @@
 	  {{ form.media }}
 	{% endblock %}
 </head>
-<body>
+<body class="{% block bodyclass %}base{% endblock bodyclass %}">
   <!-- Navigation -->
   <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
     <div class="container-fluid">
@@ -82,26 +84,10 @@
 
 
   <!-- Page Header -->
-  <header class="intro-header">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-          <div class="site-heading">
-            <h1>Clean Blog</h1>
-            <hr class="small">
-            <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+  {% block header %}{% endblock header %}
 
   <!-- Main Content -->
-  <div class="container">
-    <div class="row">
-			{% bock content %}
-    </div>
-  </div>
+	{% block content %}{% endblock content %}
 
   <hr>
 

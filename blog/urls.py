@@ -7,4 +7,5 @@ from . import views
 urlpatterns = patterns(
     '',
     url(r'^$', views.HomepageView.as_view(), name="homepage"),
+    url(r'^(?P<slug>[-\w]+)$', views.PostView.as_view(), name="post"),
 )
