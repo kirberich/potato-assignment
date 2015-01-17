@@ -15,6 +15,35 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: blog_post
+  properties:
+  - name: created
+    direction: desc
+  - name: __key__
+    direction: desc
+
+- kind: blog_post
+  properties:
+  - name: tags_ids
+  - name: created
+    direction: desc
+
+- kind: blog_tag
+  properties:
+  - name: slug
+  - name: title
+
+- kind: blog_tag
+  properties:
+  - name: title
+  - name: __key__
+    direction: desc
+
+- kind: blog_tag
+  properties:
+  - name: title
+  - name: slug
+
 - kind: django_admin_log
   properties:
   - name: user_id

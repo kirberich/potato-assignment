@@ -50,10 +50,10 @@ INSTALLED_APPS = (
     'djangae.contrib.gauth',
     'djangae',
     'blog',
+    'contacts',
     'compressor',
-    'taggit',
     'ckeditor',
-    'taggit_autosuggest',
+
 )
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
@@ -127,18 +127,19 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
 
+STATICFILES_DIRS = (
+    'potato_assignment/static',
+)
+
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
 )
 
-STATICFILES_DIRS = (
-    'potato_assignment/static',
-)
-
 if DEBUG:
     CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+    # Use nose to run all tests
 
 
 from djangae.contrib.gauth.settings import *

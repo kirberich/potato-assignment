@@ -132,12 +132,14 @@ hr.small {
     transform: translate3d(0, 100%, 0);
   }
 }
-body.homepage .intro-header {
+
+.intro-header.homepage {
   background-image: url('../img/home-bg.jpg');
 }
-body.post .intro-header {
+.intro-header.post {
   background-image: url('../img/post-bg.jpg');
 }
+
 .intro-header {
   background: no-repeat center center;
   background-color: #808080;

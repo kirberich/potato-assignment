@@ -4,28 +4,16 @@
 		"selected_items":
 		[
 			[
-				"referente_",
-				"referente_cell"
+				"as",
+				"as_view"
 			],
 			[
-				"referent",
-				"referente_email"
+				"posts",
+				"posts"
 			],
 			[
-				"referente",
-				"referente_nome"
-			],
-			[
-				"bol",
-				"bolder"
-			],
-			[
-				"sel",
-				"selected_facet"
-			],
-			[
-				"dest",
-				"dest_dir"
+				"Te",
+				"TestCase"
 			]
 		]
 	},
@@ -35,114 +23,7 @@
 			"file": "blog/models.py",
 			"settings":
 			{
-				"buffer_size": 785,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "static/jquery-autosuggest/js/jquery.autoSuggest.minified.js",
-			"settings":
-			{
-				"buffer_size": 7573,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "",
-			"file": "blog/static/aaa",
-			"file_size": -1,
-			"file_write_time": -1,
-			"settings":
-			{
-				"buffer_size": 0,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "blog/admin.py",
-			"settings":
-			{
-				"buffer_size": 271,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "blog/test.py",
-			"settings":
-			{
-				"buffer_size": 756,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "blog/views.py",
-			"settings":
-			{
-				"buffer_size": 569,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "blog/templates/homepage.html",
-			"settings":
-			{
-				"buffer_size": 0,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "potato_assignment/templates/base.html",
-			"settings":
-			{
-				"buffer_size": 2126,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "requirements.txt",
-			"settings":
-			{
-				"buffer_size": 219,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "potato_assignment/settings.py",
-			"settings":
-			{
-				"buffer_size": 3694,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "potato_assignment/settings_live.py",
-			"settings":
-			{
-				"buffer_size": 306,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "potato_assignment/urls.py",
-			"settings":
-			{
-				"buffer_size": 604,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "potato_assignment/wsgi.py",
-			"settings":
-			{
-				"buffer_size": 641,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "blog/urls.py",
-			"settings":
-			{
-				"buffer_size": 236,
+				"buffer_size": 1582,
 				"line_ending": "Unix"
 			}
 		}
@@ -150,15 +31,19 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 311.0,
+		"height": 369.0,
 		"selected_items":
 		[
 			[
 				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: ins",
 				"Package Control: Install Package"
 			]
 		],
-		"width": 424.0
+		"width": 467.0
 	},
 	"console":
 	{
@@ -178,181 +63,43 @@
 	},
 	"expanded_folders":
 	[
-		"/home/creepingdeath/django",
-		"/home/creepingdeath/django/blog",
-		"/home/creepingdeath/django/blog/static/jquery-autosuggest/js",
-		"/home/creepingdeath/django/potato_assignment",
-		"/home/creepingdeath/django/potato_assignment/templates",
-		"/home/creepingdeath/django/sitepackages"
+		"/home/creepingdeath/projects/django",
+		"/home/creepingdeath/projects/django/blog",
+		"/home/creepingdeath/projects/django/sitepackages"
 	],
 	"file_history":
 	[
-		"/home/creepingdeath/.config/sublime-text-3/Packages/User/HTML.sublime-settings",
+		"/home/creepingdeath/.config/sublime-text-3/Packages/User/SublimeLinter.sublime-settings",
+		"/home/creepingdeath/.config/sublime-text-3/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/home/creepingdeath/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/creepingdeath/.config/sublime-text-3/Packages/Pylinter/Pylinter.sublime-settings",
+		"/home/creepingdeath/projects/django/potato_assignment/urls.py",
+		"/home/creepingdeath/projects/django/blog/test.py",
+		"/home/creepingdeath/projects/django/blog/urls.py",
+		"/home/creepingdeath/projects/django/potato_assignment/settings.py",
+		"/home/creepingdeath/projects/django/requirements.txt",
+		"/home/creepingdeath/projects/django/potato_assignment/templates/base.html",
+		"/home/creepingdeath/projects/django/blog/autocomplete_light_registry.py",
+		"/home/creepingdeath/projects/django/blog/templates/blog/post.html",
+		"/home/creepingdeath/projects/django/blog/templates/blog/homepage.html",
+		"/home/creepingdeath/projects/django/blog/views.py",
+		"/home/creepingdeath/projects/django/blog/models.py",
 		"/home/creepingdeath/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
-		"/home/creepingdeath/django/potato_assignment/templates/base.html",
-		"/home/creepingdeath/.config/sublime-text-3/Packages/User/Python.sublime-settings",
-		"/home/creepingdeath/django/blog/static/jquery-autosuggest/js/jquery.autoSuggest.minified.js",
-		"/home/creepingdeath/django/requirements.txt",
-		"/home/creepingdeath/django/sitepackages/autocomplete_light/widgets.py",
-		"/home/creepingdeath/potato_assignment/wsgi.pyc",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/interfaces/segnalazione.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/segnalazione.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/contents/segnalazione.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/user.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/user.html",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/static/unibo.cultura.js",
-		"/home/creepingdeath/plone/projects/magazine/src/unibotheme.magazine/src/unibotheme/magazine/static/manifest.cfg",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.solrutils/unibo/solrutils/people.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/homepage.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibotheme.magazine/src/unibotheme/magazine/static/rules.xml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/interfaces/sottoevento.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/unibo/magazine/browser/formatter.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/configure.zcml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/config.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/utils.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/segnalazioni.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/loghiunibocultura.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/homepage.html",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.magazine/src/unibo/magazine/contents/base.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/IPython/core/formatters.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/ZODB/FileStorage/format.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/Products/CMFFormController/FormAction.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/plone/autoform/form.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/Products/GenericSetup/tests/faux_objects.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/Products/CMFDefault/skins/zpt_generic/getBatchItemInfos.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/Products/CMFDefault/skins/zpt_content/newsitem_edit_form.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/zope/formlib/itemswidgets.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/ZPublisher/Iterators.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/PIL/ImageTk.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.isa/docs/INSTALL.txt",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/configure.zcml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.magazine/setup.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/viewlets/pathbar.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/strutturaunibocultura.html",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/segnalazione_unibocultura.html",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.magazine/src/unibo/magazine/browser/static/unibo.magazine.js",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.magazine/CHANGES.txt",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/segnalazioni_unibocultura.html",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/logounibocultura.html",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/segnalazione.html",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/struttureunibocultura.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/plone/dexterity/browser/edit.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/viewlets/document_byline.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/schema/scadenzaunibocultura.xml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/interfaces/__init__.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/locandineunibocultura.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/interfaces/marker.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/segnalazioni_unibocultura.xml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/profiles/default/rolemap.xml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/profiles/default/types.xml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/profiles/default/contentrules.xml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/interfaces/homepage.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/setuphandlers.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/profiles/default/types/homepagesegnalazioni.xml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/test.xml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/loghi.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/locandine.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/locandine.html",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/profiles/default/types/logo.xml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/schema/file.xml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/schema/logo.xml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.isa/unibo/isa/browser/visitingfellowview.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/contents/homepage.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/contents/__init__.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/contents/sottoevento.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/contents/__init__.pyc",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/contents/segnalazione.pyc",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/contents.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/interfaces/markers.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/z3c/form/form.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/interfaces.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibotheme.magazine/src/unibotheme/magazine/static/templates/developer_guide/forms.html",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/overrides.zcml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.z3cform.fields/src/unibo/z3cform/fields/validators.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.z3cform.fields/src/unibo/z3cform/fields/datetimewidget.py",
-		"/home/creepingdeath/plone/projects/magazine/parts/omelette/Products/CMFDefault/formlib/form.py",
-		"/home/creepingdeath/Desktop/piwik_verbale_27.10.2014.txt",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.magazine/src/unibo/magazine/profiles/default/contentrules.xml",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/segnalazione.py",
-		"/home/creepingdeath/plone/projects/magazine/src/unibotheme.magazine/src/unibotheme/magazine/static/css/magazine.css",
-		"/home/creepingdeath/plone/projects/magazine/src/unibotheme.magazine/src/unibotheme/magazine/static/themes/main.html",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.magazine/src/unibo/magazine/profiles/default/magazine-install.txt",
-		"/home/creepingdeath/plone/projects/magazine/src/unibo.api/MANIFEST.in",
-		"/home/creepingdeath/plone/projects/portale/src/unibo.actions/Paste-1.7.5.1-py2.7.egg/paste/debug/doctest_webapp.py",
-		"/home/creepingdeath/plone/projects/portale/parts/omelette/docutils",
-		"/home/creepingdeath/plone/projects/portale/parts/omelette/zope/dottedname",
-		"/home/creepingdeath/plone/projects/portale/parts/omelette/dateutil",
-		"/home/creepingdeath/plone/projects/banca_immagini.sublime-project",
-		"/home/creepingdeath/plone/projects/banca_immmagini/banca_immagini",
-		"/P/plone/banca_immmagini/banca_immagini",
-		"/C/cygwin/home/matteo.parrucci3/android/salt/roots/salt/lib/nodejs_installer.sh",
-		"/C/Users/matteo.parrucci3/4hm.sublime-project",
-		"/O/django/ombrelloni/static/css/fonts.css",
-		"/O/django/ombrelloni/static/css/bagni.css",
-		"/O/django/ombrelloni/templates/base.html",
-		"/O/django/ombrelloni/static/js/bagnialmare_lib.js",
-		"/O/django/bagni/static/js/geolocation.js",
-		"/O/django/bagni/static/js/search.js",
-		"/O/django/bagni/static/js/contact_dialog.js",
-		"/O/django/bagni/static/js/home.js",
-		"/O/django/bagni/templates/bagni/homepage.html",
-		"/O/django/bagni/templates/bagni/search.html",
-		"/O/django/bagni/locale/it/LC_MESSAGES/django.po",
-		"/O/django/bagni/locale/en/LC_MESSAGES/django.po",
-		"/O/django/ombrelloni/static/js/ombrelloni.js",
-		"/O/django/multilingual/templatetags/__init__.py",
-		"/O/django/bagni/models/bagni.py",
-		"/O/django/bagni/admin.py",
-		"/O/django/bagni/migrations/0028_set_real_slug_to_telephone_column.py",
-		"/O/django/bagni/migrations/0032_telephone_number_names_fix.py",
-		"/O/django/bagni/management/commands/restore_telephones.py",
-		"/O/django/bagni/models/bagni_details.py",
-		"/O/django/multilingual/templatetags/multilingual.py",
-		"/O/django/bagni/templatetags/custom_templatetags.py",
-		"/O/django/ombrelloni/static/css/google-fonts.css",
-		"/O/django/ombrelloni/static/js/respond.js",
-		"/O/django/ombrelloni/static/css/ie.css",
-		"/C/cygwin/home/matteo.parrucci3/django/4hm-salty-vagrant/salt/roots/pillar/django.sls",
-		"/O/django/bagni/templates/bagni/bagno_detail.html",
-		"/O/django/authauth/__init__.py"
+		"/home/creepingdeath/.config/sublime-text-3/Packages/User/HTML.sublime-settings"
 	],
 	"find":
 	{
-		"height": 37.0
+		"height": 25.0
 	},
 	"find_in_files":
 	{
-		"height": 90.0,
+		"height": 93.0,
 		"where_history":
 		[
-			"/home/creepingdeath/plone/projects/magazine/src/",
-			"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura",
-			"/home/creepingdeath/plone/projects/magazine/src/",
-			"/home/creepingdeath/plone/projects/magazine/parts/omelette/",
-			"/home/creepingdeath/plone/projects/portale/src/",
-			"/home/creepingdeath/plone/projects/banca_immagini/src/",
-			"/home/creepingdeath/plone/projects/banca_immagini/parts/omelette",
-			"A:\\,C:\\cygwin\\home\\matteo.parrucci3\\android",
-			"O:\\django\\ombrelloni\\static\\css",
-			"O:\\django\\",
-			"O:\\django\\bagni",
-			"O:\\django\\ ",
-			"O:\\,-*.json",
-			"O:\\",
-			"C:\\cygwin\\home\\matteo.parrucci3\\django\\4hm-salty-vagrant\\salt",
-			"O:\\django\\",
-			"O:\\",
-			"C:\\Users\\matteo.parrucci3\\4hm-salty-vagrant",
-			"O:\\django",
-			"O:/django/",
-			"C:\\Users\\matteo.parrucci3\\new_server\\",
-			"C:\\Users\\matteo.parrucci3\\new_server\\roots\\salt\\lemp\\",
-			"C:\\Users\\matteo.parrucci3\\new_server\\roots\\salt\\lemp",
-			"C:\\Users\\matteo.parrucci3\\new_server\\roots\\salt\\",
-			"C:\\Users\\matteo.parrucci3\\new_server\\*",
-			"C:\\Users\\matteo.parrucci3\\new_server\\",
-			"C:\\Users\\matteo.parrucci3\\new_server",
-			"C:\\Users\\matteo.parrucci3\\4hm-salty-vagrant"
+			"/home/creepingdeath/projects/django/blog,/home/creepingdeath/projects/django/potato_assignment",
+			"/home/creepingdeath/projects/django/",
+			"/home/creepingdeath/projects/django/blog",
+			""
 		]
 	},
 	"find_state":
@@ -360,134 +107,20 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"tab",
-			"templ",
-			"stati",
-			"finder",
-			"	",
-			"key",
-			"\",\"",
-			"\\",
-			"\\t",
-			"reg",
-			"taggi",
-			"taggiy",
-			"scaf",
-			"scaff",
-			"down",
-			"resources",
-			"$",
-			"segn",
-			"people_cache_key",
-			"get_maggiori_informazioni",
-			"maggio",
-			"maggiori_informazioni_title",
-			"magg",
-			"time",
-			"def get_time_string",
-			"get_time_string",
-			"evento",
-			"sotto",
-			"def sottoeventi",
-			"agg",
-			"archi",
-			"unibo",
-			"fieldset",
-			"fieldse",
-			"referente_nome",
-			"contact",
-			"refere",
-			"sott",
-			"sub",
-			"desc",
-			"loca",
-			"log",
-			"</dt>:",
-			"<dt i18n:translate=\"\">",
-			"</dt>:",
-			"dl",
-			"ul",
-			"ILinkUtility",
-			"home_segnalazioni",
-			"util",
-			"paths[",
-			"path[",
-			"path",
-			"get_url_from_path",
-			"path",
-			"nextURL",
-			"next",
-			"log",
-			"login",
-			"show_login",
-			"login",
-			"z3c",
-			"datep",
-			"magaz",
-			"editor",
-			"content.get",
-			"path",
-			"paths[\"unibocultura\"]",
-			"unibo",
-			"api",
-			"copy",
-			"edit",
-			"rdit",
+			"lint",
+			"TaggableManager",
+			"static_url",
+			"static",
+			"reve",
+			"pwd",
 			"pdb",
-			"add",
-			"default",
-			"add",
-			" \\",
-			"get_edit_url",
-			"edit",
-			"IStrutturaUnibocultura",
-			"strutt",
-			"./edit",
-			".edit",
-			"invar",
-			"[]",
-			"IDexterityFTI",
-			"addf",
-			"can_modify",
-			"sotto",
-			"sube",
-			"text",
-			"edit",
-			"check",
-			"che",
-			"checj",
-			"chec",
-			"is",
-			"can",
-			"is",
-			"condi",
-			"000000",
-			"get_vo",
-			"get_v",
-			"get_",
-			"magazine",
-			"interfa",
-			"\"magazine",
-			"ILinkUtility",
-			"ilink",
-			"link",
-			"IAddLinkUtility",
-			"ILinkUtility",
-			"join",
-			"get_stru",
-			"attru",
-			"req",
-			"include",
-			"add-li",
-			"draw",
-			"reind",
-			"a[href$='/include'], .data-table a[href$='/exclude']",
-			"hide",
-			"data",
-			"creazione",
-			"form",
-			"default_color",
-			"unibocul"
+			"posts",
+			"revers",
+			"self.",
+			"posts",
+			"post",
+			"client",
+			"c."
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -495,21 +128,7 @@
 		"regex": false,
 		"replace_history":
 		[
-			"</tal:block>:</dt>",
-			"<dt><tal:block i18n:translate=\"\">",
-			":</dt>",
-			"ILinkUtility",
-			"start_year",
-			"start_month",
-			"\\n",
-			"url('../fonts/",
-			"bagnialmare",
-			"bagnialmare.com",
-			"    ",
-			"\\n            - $1",
-			"__grains__",
-			"__pillar__",
-			"    "
+			"self.posts"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -520,7 +139,7 @@
 	"groups":
 	[
 		{
-			"selected": 7,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -529,394 +148,28 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 785,
+						"buffer_size": 1582,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								702,
-								702
+								199,
+								199
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "static/jquery-autosuggest/js/jquery.autoSuggest.minified.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7573,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4994,
-								4994
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 32777.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "blog/static/aaa",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 0,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "blog/admin.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 271,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								271,
-								271
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 13,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "blog/test.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 756,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								617,
-								617
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "blog/views.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 569,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								546,
-								546
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "blog/templates/homepage.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 0,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"syntax": "Packages/HTML/HTML.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "potato_assignment/templates/base.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2126,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								259,
-								259
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "requirements.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 219,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								213,
-								213
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "potato_assignment/settings.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3694,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1855,
-								1855
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 656.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "potato_assignment/settings_live.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 306,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5,
-								5
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "potato_assignment/urls.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 604,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								99,
-								99
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "potato_assignment/wsgi.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 641,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								24,
-								24
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"file": "blog/urls.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 236,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								203,
-								203
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
 					"type": "text"
 				}
 			]
@@ -928,7 +181,7 @@
 	},
 	"input":
 	{
-		"height": 31.0
+		"height": 33.0
 	},
 	"layout":
 	{
@@ -953,17 +206,9 @@
 		]
 	},
 	"menu_visible": true,
-	"output.exec":
-	{
-		"height": 100.0
-	},
 	"output.find_results":
 	{
 		"height": 0.0
-	},
-	"output.vagrant":
-	{
-		"height": 100.0
 	},
 	"project": "potato_assignment.sublime-project",
 	"replace":
@@ -976,32 +221,16 @@
 		"height": 0.0,
 		"selected_items":
 		[
-			[
-				"formatt",
-				"omelette/unibo/magazine/browser/formatter.py"
-			],
-			[
-				"download",
-				"unibo.contents/src/unibo/contents/downloadarea.py"
-			],
-			[
-				"downlo",
-				"unibo.contents/src/unibo/contents/downloadarea.py"
-			]
 		],
 		"width": 0.0
 	},
 	"select_project":
 	{
-		"height": 500.0,
+		"height": 0.0,
 		"selected_items":
 		[
-			[
-				"",
-				"/C/Users/matteo.parrucci3/portale.sublime-project"
-			]
 		],
-		"width": 380.0
+		"width": 0.0
 	},
 	"select_symbol":
 	{
@@ -1019,7 +248,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 320.0,
+	"side_bar_width": 258.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
