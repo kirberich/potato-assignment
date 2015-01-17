@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{%block pagetitle %}{{ tag.title }} - {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+  <li><a href="{% url 'homepage' %}">Home</a></li>
+  <li><a href="{% url 'tags' %}">Tags</a></li>
+  <li class="active">{{ tag.title }}</li>
+</ol>
+{% endblock breadcrumbs %}
+
+{% block header %}
+  <header class="intro-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <div class="post-heading">
+            <h1>Posts about {{ tag.title }}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+
+
+{% block content %}
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          {% for post in tag.posts.all %}
+            {% include 'blog/include/post_in_listing.html' %}
+            {% if not forloop.last %}
+            <hr>
+            {% endif %}
+            {% empty %}
+              <p>Sorry, no post for tag {{ tag.title }}</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </article>
+{% endblock content %}
