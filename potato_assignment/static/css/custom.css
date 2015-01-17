@@ -1,0 +1,34 @@
+.meta .tag
+{
+  margin-right: 1%;
+}
+#custom-brand
+{
+  background-image: url('../img/logo-32.png');
+  background-repeat: no-repeat;
+  height: 32px;
+  line-height: 32px;
+  font-size: 1em;
+  padding-left: 40px;
+}
+
+.navbar-custom .navbar-brand
+{
+    padding:10px;
+}
+
+@media only screen and (min-width: 768px) {
+  #custom-brand
+  {
+    background-image: url('../img/logo-50.png');
+    background-repeat: no-repeat;
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.5em;
+    padding-left: 60px;
+  }
+  .navbar-custom .navbar-brand
+  {
+    padding:10px;
+  }
+}
