@@ -1,18 +1,34 @@
 {% extends "base.html" %}
 
-{%block pagetitle %}{{ object.title }} - {{ block.super }}{% endblock %}
+{%block pagetitle %}{{ post.title }} - {{ block.super }}{% endblock %}
 
-{% block bodyclass %}post{% endblock bodyclass %}
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+  <li><a href="{% url 'homepage' %}">Home</a></li>
+  <li><a href="{% url 'posts' %}">Posts</a></li>
+  <li class="active">{{ post.title }}</li>
+</ol>
+{% endblock breadcrumbs %}
 
 {% block header %}
-  <header class="intro-header">
+  <header class="intro-header post">
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           <div class="post-heading">
             <h1>{{ post.title }}</h1>
             <h2 class="subheading">{{ post.subtitle }}</h2>
-            <span class="meta">Posted on {{ post.created|date:"Y-M-D" }}</span>
+            <span class="meta">
+              Posted on {{ post.created|date:"Y-m-d" }}
+              {% for tag in post.tags.all %}
+              {% if forloop.first %}
+                under tags:
+              {% endif %}
+              <span class="tag label label-info">
+                  <a href="{% url 'tag' tag.slug %}">#{{ tag.title }}</a>
+              </span>
+              {% endfor %}
+            </span>
           </div>
         </div>
       </div>
@@ -30,5 +46,6 @@
         </div>
       </div>
     </div>
+
   </article>
 {% endblock content %}

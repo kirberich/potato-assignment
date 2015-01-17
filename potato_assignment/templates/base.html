@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load i18n compress %}
+{% load i18n compress staticfiles %}
 
 <html lang="{{LANGUAGE_CODE}}">
 <head>
@@ -11,39 +11,38 @@
 
 	<link rel="icon" type="image/png" sizes="192x192" href="/static/img/logo-192.png" />
 	<!--[if IE]>
-	  <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico"/>
+	  <link rel="shortcut icon" href="{% static "img/favicon.ico" %}" />
 	<![endif]-->
 
 	{% compress css %}
-	<link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet" />
-	<link href="{{ STATIC_URL }}css/bootstrap-theme.css" rel="stylesheet" />
-	<link href="{{ STATIC_URL }}blog/css/blog.css" rel="stylesheet" />
+	<link href="{% static "css/bootstrap.css" %}" rel="stylesheet" />
+	<link href="{% static "css/bootstrap-theme.css" %}" rel="stylesheet" />
+	<link href="{% static "blog/css/blog.css" %}" rel="stylesheet" />
+  <link href="{% static "css/custom.css" %}" rel="stylesheet" />
 	{% endcompress %}
 
 	<!--[if IE]>
 	{% compress css %}
-	  <link href="{{ STATIC_URL }}css/ie.css" rel="stylesheet" />
+	  <link href="{% static "css/ie.css" %}" rel="stylesheet" />
 	{% endcompress %}
 	<![endif]-->
 
 	{% compress js %}
-	  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.11.2.js"></script>
-	  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.js"></script>
-	  <link href="{{ STATIC_URL }}blog/js/blog.js" rel="stylesheet" />
+	  <script type="text/javascript" src="{% static "js/jquery-1.11.2.js" %}"></script>
+	  <script type="text/javascript" src="{% static "js/bootstrap.js" %}"></script>
+	  <link href="{% static "blog/js/blog.js" %}" rel="stylesheet" />
 	{% endcompress %}
 
 	{% compress js %}
+  {{ form.media.js }}
 	{% block specific_js %}{% endblock specific_js %}
 	{% endcompress %}
 
 	{% compress css %}
+  {{ form.media.css }}
 	{% block specific_css %}{% endblock specific_css %}
 	{% endcompress %}
 
-
-	{% block extrahead %}
-	  {{ form.media }}
-	{% endblock %}
 </head>
 <body class="{% block bodyclass %}base{% endblock bodyclass %}">
   <!-- Navigation -->
@@ -57,23 +56,23 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+        <a class="navbar-brand" href="{% url 'homepage' %}"><div id="custom-brand">Potato blog</div></a>
     	</div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a href="index.html">Home</a>
+                <a href="{% url 'homepage' %}">Home</a>
             </li>
             <li>
-                <a href="about.html">About</a>
+                <a href="{% url 'posts' %}">Blog</a>
             </li>
             <li>
-                <a href="post.html">Sample Post</a>
+                <a href="{% url 'tags' %}">Tags</a>
             </li>
             <li>
-                <a href="contact.html">Contact</a>
+                <a href="{% url 'contact-form' %}">Contact</a>
             </li>
         </ul>
       </div>
@@ -85,6 +84,9 @@
 
   <!-- Page Header -->
   {% block header %}{% endblock header %}
+
+  <!-- Breadcrumbs -->
+  {% block breadcrumbs %}{% endblock breadcrumbs %}
 
   <!-- Main Content -->
 	{% block content %}{% endblock content %}
@@ -122,7 +124,7 @@
               </a>
             </li>
           </ul>
-          <p class="copyright text-muted">Copyright &copy; Your Website 2014</p>
+          <p class="copyright text-muted">Created by <a href="whttp://matteoparrucci.it">Matteo Parrucci</a> in 2015</p>
         </div>
       </div>
     </div>
