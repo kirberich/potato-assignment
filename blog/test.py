@@ -3,19 +3,21 @@ from django.test import Client
 from django.core.urlresolvers import reverse
 
 from blog.models import Post
+from blog.forms import PostForm
 
 
 class PostModelTestCase(TestCase):
 
     def setUp(self):
-        self.post = Post.objects.create(title="Test post")
+        self.post_1 = Post.objects.create(title="Test post")
 
     def tearDown(self):
         del(self.post)
 
     def test_post_autoslug(self):
         """Test the autoslug field has the right automatic value"""
-        self.assertEqual(self.post.slug, "test-post")
+        self.assertEqual(self.post_1.slug, "test-post")
+        self.assertEqual(self.post_2.slug, "test-post-1")
 
 
 class postViewTestCase(TestCase):

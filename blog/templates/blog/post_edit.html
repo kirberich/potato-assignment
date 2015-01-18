@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{%block pagetitle %}Edit {{ post.title }} - {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+  <li><a href="{% url 'homepage' %}">Home</a></li>
+  <li class="active">Edit {{ post.title }} </li>
+</ol>
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+  <div class="col-xs-8 col-xs-offset-2">
+    <form action="." method="post" class="" role="form">
+      {% include 'blog/include/post_form_fields.html' %}
+      <button class="btn btn-primary" type="submit" >Save</button>
+    </form>
+  </div>
+</div>
+{% endblock content %}

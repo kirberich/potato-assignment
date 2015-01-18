@@ -24,6 +24,12 @@ indexes:
 
 - kind: blog_post
   properties:
+  - name: slug
+  - name: created
+    direction: desc
+
+- kind: blog_post
+  properties:
   - name: tags_ids
   - name: created
     direction: desc

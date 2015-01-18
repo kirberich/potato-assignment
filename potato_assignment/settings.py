@@ -55,11 +55,11 @@ INSTALLED_APPS = (
     'contacts',
     'compressor',
     'ckeditor',
-
 )
 
-CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_UPLOAD_PATH = "ck-uploads/"
 CKEDITOR_CONFIGS = {'default': {'toolbar': 'Basic', }, }
+CSP_EXCLUDE_URL_PREFIXES = ("/posts/add-new", "/posts/[-\w]+/edit")
 MIDDLEWARE_CLASSES = (
     'djangae.contrib.security.middleware.AppEngineSecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

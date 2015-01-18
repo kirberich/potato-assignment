@@ -1,8 +1,15 @@
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.views.generic.edit import UpdateView
+from django.views.generic.edit import CreateView
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import requires_csrf_token
+from django.contrib.auth.decorators import login_required
 
 from .models import Post
 from .models import Tag
+from .forms import PostAddForm
+from .forms import PostEditForm
 
 import logging
 logging.basicConfig()
@@ -32,6 +39,30 @@ class PostView(DetailView):
     context_object_name = "post"
     template_name = "blog/post.html"
     model = Post
+
+
+class PostEdit(UpdateView):
+    """ Edit a single post
+    """
+    template_name = "blog/post_edit.html"
+    form_class = PostEditForm
+
+    @method_decorator(requires_csrf_token)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PostEdit, self).dispatch(*args, **kwargs)
+
+
+class PostAdd(CreateView):
+    """ Add a single post
+    """
+    template_name = "blog/post_add.html"
+    form_class = PostAddForm
+
+    @method_decorator(requires_csrf_token)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PostAdd, self).dispatch(*args, **kwargs)
 
 
 class TagsView(ListView):

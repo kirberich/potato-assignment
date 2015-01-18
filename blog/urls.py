@@ -2,13 +2,21 @@
 from django.conf.urls import patterns, url
 # from django.utils.translation import ugettext_lazy as _
 
-from . import views
+from .views import HomepageView
+from .views import PostsView
+from .views import PostView
+from .views import PostEdit
+from .views import PostAdd
+from .views import TagsView
+from .views import TagView
 
 urlpatterns = patterns(
     '',
-    url(r'^$', views.HomepageView.as_view(), name="homepage"),
-    url(r'^posts$', views.PostsView.as_view(), name="posts"),
-    url(r'^posts/(?P<slug>[-\w]+)$', views.PostView.as_view(), name="post"),
-    url(r'^tags$', views.TagsView.as_view(), name="tags"),
-    url(r'^tags/(?P<slug>[-\w]+)$', views.TagView.as_view(), name="tag")
+    url(r'^$', HomepageView.as_view(), name="homepage"),
+    url(r'^posts/$', PostsView.as_view(), name="posts"),
+    url(r'^posts/add-new/$', PostAdd.as_view(), name="post-add"),
+    url(r'^posts/(?P<slug>[-\w]+)/$', PostView.as_view(), name="post"),
+    url(r'^posts/(?P<slug>[-\w]+)/edit/$', PostEdit.as_view(), name="post-edit"),
+    url(r'^tags/$', TagsView.as_view(), name="tags"),
+    url(r'^tags/(?P<slug>[-\w]+)/$', TagView.as_view(), name="tag")
 )
