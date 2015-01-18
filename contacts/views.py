@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
-from django.core.mail import EmailMessage
+from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import requires_csrf_token
 from django.views.generic.edit import FormView
+
+from google.appengine.api import mail
 
 from .forms import ContactForm
 
@@ -18,16 +22,19 @@ class ContactView(FormView):
     success_message = "Thanks for contacting us. We will get in touch asap."
 
     def form_valid(self, form):
-        message = form.cleaned_data['message']
-        recipients = [email[1] for email in settings.ADMINS]
         sender = form.cleaned_data['sender']
+        message = "Message received from %s\n\n" % sender
+        message += form.cleaned_data['message']
+        recipients = [email[1] for email in settings.ADMINS]
+        admin = recipients[0]
         subject = "[potato-assigment blog] Information request"
+        self.success_url = reverse('homepage')
 
         try:
-            email = EmailMessage(subject=subject,
-                                 body=message,
-                                 to=recipients,
-                                 headers={'Reply-To': sender})
+            email = mail.EmailMessage(sender=admin,
+                                      subject=subject,
+                                      body=message,
+                                      to=recipients)
             email.send()
             messages.add_message(self.request,
                                  messages.INFO,
@@ -37,6 +44,10 @@ class ContactView(FormView):
             messages.add_message(self.request,
                                  messages.ERROR,
                                  "Error sending the mail: Contact us at \
-                                 info at bagnialmare dot com to inform \
+                                 potato-assigment@google.com to inform \
                                  us about the error. Thanks")
         return super(ContactView, self).form_valid(form)
+
+    @method_decorator(requires_csrf_token)
+    def dispatch(self, *args, **kwargs):
+        return super(ContactView, self).dispatch(*args, **kwargs)

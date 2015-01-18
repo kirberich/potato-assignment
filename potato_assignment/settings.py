@@ -27,6 +27,8 @@ DEBUG = True
 COMPRESS_ENABLED = False
 TEMPLATE_DEBUG = True
 
+ADMINS = (('Matteo Parrucci', 'parruc@gmail.com'),)
+
 COMPRESS_CSS_FILTERS = [
     'compressor.filters.css_default.CssAbsoluteFilter',
     'compressor.filters.cssmin.CSSMinFilter',

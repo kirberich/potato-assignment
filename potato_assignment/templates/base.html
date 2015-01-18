@@ -30,7 +30,8 @@
 	{% compress js %}
 	  <script type="text/javascript" src="{% static "js/jquery-1.11.2.js" %}"></script>
 	  <script type="text/javascript" src="{% static "js/bootstrap.js" %}"></script>
-	  <link href="{% static "blog/js/blog.js" %}" rel="stylesheet" />
+    <script type="text/javascript" src="{% static "blog/js/blog.js" %}" rel="stylesheet"></script>
+    <script type="text/javascript" src="{% static "js/custom.js" %}" rel="stylesheet"></script>
 	{% endcompress %}
 
 	{% compress js %}
@@ -45,6 +46,16 @@
 
 </head>
 <body class="{% block bodyclass %}base{% endblock bodyclass %}">
+  <!-- Page Messages -->
+  {% for message in messages %}
+  <div class="page-alert">
+    <div class="alert alert-{{ message.tags }} fade in" >
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+      <span>{{ message }}</span>
+    </div>
+  </div>
+  {% endfor %}
+
   <!-- Navigation -->
   <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
     <div class="container-fluid">
@@ -80,7 +91,6 @@
     </div>
     <!-- /.container -->
   </nav>
-
 
   <!-- Page Header -->
   {% block header %}{% endblock header %}
