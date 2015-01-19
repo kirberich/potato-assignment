@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load addclasstofield %}
+
 {% block pagetitle %}Contact us{% endblock %}
 
 {% block breadcrumbs %}
@@ -27,22 +29,22 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-xs-8 col-xs-offset-2">
-    <form action="." method="post" class="" role="form">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <form action="." method="post" class="form-horizontal" role="form">
       {% csrf_token %}
       <div class="form-group">
         <label for="id_sender">Your email address</label>
         {% for error in form.sender.errors %}
           {% include 'includes/form_error.html' %}
         {% endfor %}
-        {{ form.sender }}
+        {{ form.sender|addclasstofield:"form-control" }}
       </div>
       <div class="form-group">
         <label for="id_message">Message:</label>
         {% for error in form.message.errors %}
           {% include 'includes/form_error.html' %}
         {% endfor %}
-        {{ form.message }}
+        {{ form.message|addclasstofield:"form-control" }}
      </div>
       <button class="btn btn-primary" type="submit" >Send Your Message</button>
     </form>

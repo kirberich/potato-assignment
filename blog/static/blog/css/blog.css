@@ -191,7 +191,7 @@ hr.small {
   font-size: 35px;
 }
 .intro-header .post-heading .subheading,
-.intro-header .post-heading .meta {
+.intro-header .post-heading .post-meta {
   line-height: 1.1;
   display: block;
 }
@@ -201,14 +201,19 @@ hr.small {
   margin: 10px 0 30px;
   font-weight: 600;
 }
-.intro-header .post-heading .meta {
+.intro-header .post-heading .post-meta {
   font-family: 'Lora', 'Times New Roman', serif;
   font-style: italic;
   font-weight: 300;
   font-size: 20px;
 }
-.intro-header .post-heading .meta a {
+.intro-header .post-heading .post-meta .tag {
+  margin: 0px 5px;
   color: white;
+}
+.intro-header .post-heading .post-meta .tag a {
+  color: white;
+  text-decoration: none;
 }
 @media only screen and (min-width: 768px) {
   .intro-header .post-heading h1 {
@@ -242,14 +247,12 @@ hr.small {
   font-style: italic;
   margin-top: 0;
 }
-.post-preview > .post-meta > a {
-  text-decoration: none;
-  color: #404040;
+.post-preview > .post-meta .tag {
+  margin: 0px 5px;
 }
-.post-preview > .post-meta > a:hover,
-.post-preview > .post-meta > a:focus {
-  color: #0085a1;
-  text-decoration: underline;
+.post-preview > .post-meta .tag a {
+  text-decoration: none;
+  color: white;
 }
 @media only screen and (min-width: 768px) {
   .post-preview > a > .post-title {

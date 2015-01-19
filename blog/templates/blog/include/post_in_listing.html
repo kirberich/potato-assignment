@@ -7,5 +7,5 @@
       <h3 class="post-subtitle">
         {{ post.subtitle }}
       </h3>
-      <p class="post-meta">Posted on {{ post.created|date:"Y-m-d" }}</p>
+      {% include 'blog/include/post_meta.html' %}
     </div>

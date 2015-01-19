@@ -32,7 +32,7 @@
         {% for tag in tags %}
           {% for post in tag.posts.all %}
             {% if forloop.first %}
-              <h1>Posts for <span class="label label-info"><a href={{ tag.get_absolute_url }}>#{{ tag.title }}</a></span></h1>
+              <h1>Posted under "{{ tag.title }}"</h1>
             {% endif %}
             {% include 'blog/include/post_in_listing.html' %}
           {% endfor %}
