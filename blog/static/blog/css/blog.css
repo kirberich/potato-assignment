@@ -139,7 +139,15 @@ hr.small {
 .intro-header.post {
   background-image: url('../img/post-bg.jpg');
 }
-
+.intro-header.posts {
+  background-image: url('../img/posts-bg.jpg');
+}
+.intro-header.tags {
+  background-image: url('../img/tags-bg.jpg');
+}
+.intro-header.tag {
+  background-image: url('../img/tag-bg.jpg');
+}
 .intro-header {
   background: no-repeat center center;
   background-color: #808080;
