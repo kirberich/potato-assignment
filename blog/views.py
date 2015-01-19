@@ -1,15 +1,18 @@
+import json
+
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.views.generic.list import BaseListView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import CreateView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import requires_csrf_token
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 from .models import Post
 from .models import Tag
-from .forms import PostAddForm
-from .forms import PostEditForm
+from .forms import PostForm
 
 import logging
 logging.basicConfig()
@@ -45,7 +48,8 @@ class PostEdit(UpdateView):
     """ Edit a single post
     """
     template_name = "blog/post_edit.html"
-    form_class = PostEditForm
+    form_class = PostForm
+    model = Post
 
     @method_decorator(requires_csrf_token)
     @method_decorator(login_required)
@@ -57,7 +61,7 @@ class PostAdd(CreateView):
     """ Add a single post
     """
     template_name = "blog/post_add.html"
-    form_class = PostAddForm
+    form_class = PostForm
 
     @method_decorator(requires_csrf_token)
     @method_decorator(login_required)
@@ -72,6 +76,32 @@ class TagsView(ListView):
     context_object_name = "tags"
     template_name = "blog/tags.html"
     paginate_by = 2
+
+
+class JSONResponseMixin(object):
+    def render_to_response(self, context):
+        "Returns a JSON response containing 'context' as payload"
+        return self.get_json_response(self.convert_context_to_json(context))
+
+    def get_json_response(self, content, **httpresponse_kwargs):
+        "Construct an `HttpResponse` object."
+        return HttpResponse(content,
+                            content_type='application/json',
+                            **httpresponse_kwargs)
+
+    def convert_context_to_json(self, context):
+        "Convert the context dictionary into a JSON object"
+        return json.dumps(context)
+
+
+class JsonTagsView(JSONResponseMixin, BaseListView):
+
+    model = Tag
+
+    def get_context_data(self, **kwargs):
+        import pdb; pdb.set_trace()
+        queryset = kwargs.pop('object_list', self.object_list)
+        return [(tag.pk, tag.title) for tag in queryset]
 
 
 class TagView(DetailView):

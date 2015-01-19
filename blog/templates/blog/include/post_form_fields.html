@@ -21,7 +21,7 @@
   {% endfor %}
   {{ form.text|addclasstofield:"form-control" }}
 </div>
-<div class="form-group">
+<div class="form-group" data-url="{% url 'tags-json' %}">
   <label for="subtitle">Tags</label>
   {% for error in form.tags.errors %}
     {% include 'includes/form_error.html' %}

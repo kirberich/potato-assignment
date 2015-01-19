@@ -10,6 +10,19 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: blog_basemodel
+  properties:
+  - name: class
+  - name: created
+    direction: desc
+  - name: __key__
+    direction: desc
+
+- kind: blog_basemodel
+  properties:
+  - name: class
+  - name: title
+
 - kind: blog_post
   properties:
   - name: __key__
@@ -33,6 +46,11 @@ indexes:
   - name: tags_ids
   - name: created
     direction: desc
+
+- kind: blog_tag
+  properties:
+  - name: _idx_icontains_title
+  - name: title
 
 - kind: blog_tag
   properties:

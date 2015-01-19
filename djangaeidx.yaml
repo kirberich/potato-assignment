@@ -1,2 +1,4 @@
+blog_tag:
+  title: [icontains]
 taggit_tag:
   name: [icontains]

@@ -140,8 +140,9 @@ STATICFILES_FINDERS = (
 )
 
 if DEBUG:
-    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval")
     # Use nose to run all tests
+CSP_DEFAULT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval")
 
 
 from djangae.contrib.gauth.settings import *
