@@ -3,7 +3,7 @@ import itertools
 
 from django.db import models
 from django.utils.text import slugify
-from django.core.urlresolvers import reverse
+from django.core.validators import MaxLengthValidator
 
 from djangae.fields import RelatedSetField
 
@@ -61,7 +61,7 @@ class Comment(BaseModel):
         ordering = ("-created", )
 
     author = models.CharField(max_length=50)
-    text = models.TextField(max_length=500)
+    text = models.TextField(max_length=500, validators=[MaxLengthValidator(500)])
     created = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey("Post", related_name="comments", null=True)
 
