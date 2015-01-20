@@ -64,7 +64,7 @@ class PostEdit(UpdateView):
 
     @method_decorator(requires_csrf_token)
     @method_decorator(login_required)
-    @method_decorator(permission_required, 'blog.post_edit')
+    @method_decorator(permission_required("blog.post_edit"))
     def dispatch(self, *args, **kwargs):
         return super(PostEdit, self).dispatch(*args, **kwargs)
 
@@ -77,7 +77,7 @@ class PostAdd(CreateView):
 
     @method_decorator(requires_csrf_token)
     @method_decorator(login_required)
-    @method_decorator(permission_required, 'blog.post_add')
+    @method_decorator(permission_required('blog.post_add'))
     def dispatch(self, *args, **kwargs):
         return super(PostAdd, self).dispatch(*args, **kwargs)
 
@@ -151,7 +151,7 @@ class JSONPostDelete(JSONDeletionMixin, DeleteView):
 
     @method_decorator(requires_csrf_token)
     @method_decorator(login_required)
-    @method_decorator(permission_required, 'blog.post_delete')
+    @method_decorator(permission_required('blog.post_delete'))
     def dispatch(self, *args, **kwargs):
         return super(JSONPostDelete, self).dispatch(*args, **kwargs)
 
