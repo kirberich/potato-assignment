@@ -1,4 +1,23 @@
     <div class="post-preview">
+        <span class="pull-right actions">
+          {% if forloop.first %}
+            {% if perms.blog.can_add_post %}
+              <a class="glyphicon glyphicon-plus" href="{% url 'add-post' %}"></a>
+            {% endif %}
+            {% if perms.blog.can_edit_post %}
+              <a class="glyphicon glyphicon-pencil" href="{{ post.get_edit_url }}"></a>
+            {% endif %}
+            {% if perms.blog.can_delete_post %}
+              <a class="delete-link glyphicon glyphicon-remove" data-dialog="dialog-{{ post.slug }}" href="{{ post.get_delete_url }}"></a>
+              <div id="dialog-{{ post.slug }}" title="Remove the selected element?">
+                <p>
+                  <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+                  Be careful this operation cannot be undone. Are you sure?
+                </p>
+              </div>
+            {% endif %}
+          {% endif %}
+        </span>
       <a href="{{ post.get_absolute_url }}">
         <h2 class="post-title">
           {{ post.title }}
@@ -8,4 +27,7 @@
         {{ post.subtitle }}
       </h3>
       {% include 'blog/include/post_meta.html' %}
+      {% if not forloop.last %}
+        <hr>
+      {% endif %}
     </div>

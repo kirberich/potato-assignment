@@ -61,7 +61,8 @@ class Comment(BaseModel):
         ordering = ("-created", )
 
     author = models.CharField(max_length=50)
-    text = models.TextField(max_length=500, validators=[MaxLengthValidator(500)])
+    text = models.TextField(max_length=500,
+                            validators=[MaxLengthValidator(500)])
     created = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey("Post", related_name="comments", null=True)
 
@@ -85,3 +86,7 @@ class Post(BaseModel):
     @models.permalink
     def get_edit_url(self):
         return ("post-edit", [self.slug, ])
+
+    @models.permalink
+    def get_delete_url(self):
+        return ("post-delete", [self.slug, ])

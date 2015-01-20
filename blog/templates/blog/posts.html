@@ -32,9 +32,6 @@
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         {% for post in posts %}
         {% include 'blog/include/post_in_listing.html' %}
-        {% if not forloop.last %}
-        <hr>
-        {% endif %}
         {% empty %}
           <p>Sorry, no post in this blog.</p>
         {% endfor %}

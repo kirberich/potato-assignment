@@ -2,7 +2,7 @@ $(function() {
     $("#id_tags").select2({
         tags: true
     });
-    $('#add_comment_submit').click(function(evt) {
+    $('#add_comment_submit').on("click", function(evt) {
         evt.preventDefault();
         $.ajax({
             url: $('#add_comment_form').attr('action'),
@@ -28,10 +28,37 @@ $(function() {
                                                                         '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' +
                                                                         '<span class="sr-only">Error:</span>' +
                                                                         '<span>' + response.errors.fields[error] + '</span>' +
-                                                                    '</div>')
+                                                                    '</div>');
                     }
                 }
             }
+        });
+    });
+    $(".delete-link").on("click", function(evt){
+        evt.preventDefault();
+        var dialog_id = $(this).data("dialog");
+        alert(dialog_id);
+        $("#" + dialog_id).dialog({
+          resizable: false,
+          height:140,
+          modal: true,
+          buttons: {
+            "Delete item": function() {
+                $.ajax({
+                    // TODO!!!!!!!!!!!!!!!!!!
+                    url: $(this).attr("href"),
+                    type: 'POST',
+                    dataType: 'json',
+                    context: dialog_id,
+                    success: function(response) {
+                        $("#" + dialog_id).dialog( "close" );
+                    }
+                });
+             },
+            Cancel: function() {
+              $( this ).dialog( "close" );
+            }
+          }
         });
     });
 });

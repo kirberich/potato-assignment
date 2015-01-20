@@ -5,6 +5,7 @@ from .views import HomepageView
 from .views import PostsView
 from .views import PostView
 from .views import PostEdit
+from .views import JSONPostDelete
 from .views import PostAdd
 from .views import TagsView
 from .views import TagView
@@ -20,6 +21,9 @@ urlpatterns = patterns(
     url(r'^posts/(?P<slug>[-\w]+)/edit/$',
         PostEdit.as_view(),
         name="post-edit"),
+    url(r'^posts/(?P<slug>[-\w]+)/edit/$',
+        JSONPostDelete.as_view(),
+        name="post-delete"),
     url(r'^tags/$', TagsView.as_view(), name="tags"),
     url(r'^tags/(?P<slug>[-\w]+)/$', TagView.as_view(), name="tag"),
     url(r'^tags-json/$', JSONTagsView.as_view(), name="tags-json"),

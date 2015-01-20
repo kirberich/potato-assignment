@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 import json
-import datetime
 
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import CreateView
+from django.views.generic.edit import DeleteView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import requires_csrf_token
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
-from django.db.models import DateTimeField
 
 from .models import Post
 from .models import Tag
@@ -64,6 +64,7 @@ class PostEdit(UpdateView):
 
     @method_decorator(requires_csrf_token)
     @method_decorator(login_required)
+    @method_decorator(permission_required, 'blog.post_edit')
     def dispatch(self, *args, **kwargs):
         return super(PostEdit, self).dispatch(*args, **kwargs)
 
@@ -76,6 +77,7 @@ class PostAdd(CreateView):
 
     @method_decorator(requires_csrf_token)
     @method_decorator(login_required)
+    @method_decorator(permission_required, 'blog.post_add')
     def dispatch(self, *args, **kwargs):
         return super(PostAdd, self).dispatch(*args, **kwargs)
 
@@ -126,6 +128,32 @@ class JSONFormMixin(JSONResponseMixin):
                                         obj=self.object,
                                         success=True)
         return self.render_to_response(context)
+
+
+class JSONDeletionMixin(JSONFormMixin):
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        context = self.get_context_data(success=True)
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        success = kwargs.get('success', False)
+        json.dumps({"success": success})
+
+
+class JSONPostDelete(JSONDeletionMixin, DeleteView):
+    """ Remove a single post
+    """
+
+    model = Post
+
+    @method_decorator(requires_csrf_token)
+    @method_decorator(login_required)
+    @method_decorator(permission_required, 'blog.post_delete')
+    def dispatch(self, *args, **kwargs):
+        return super(JSONPostDelete, self).dispatch(*args, **kwargs)
 
 
 class JSONCommentAdd(JSONFormMixin, CreateView):
