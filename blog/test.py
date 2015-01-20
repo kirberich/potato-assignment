@@ -1,9 +1,9 @@
+# -*- coding: utf-8 -*-
 from django.test import TestCase
 from django.test import Client
 from django.core.urlresolvers import reverse
 
 from blog.models import Post
-from blog.forms import PostForm
 
 
 class PostModelTestCase(TestCase):

@@ -249,6 +249,14 @@ hr.small {
   font-weight: 300;
   margin-bottom: 10px;
 }
+#comments {
+  color: #808080;
+  font-size: 18px;
+  margin-top: 0;
+}
+#comments > article > .meta {
+  font-style: italic;
+}
 .post-preview > .post-meta {
   color: #808080;
   font-size: 18px;

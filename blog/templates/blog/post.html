@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load addclasstofield %}
+
 {%block pagetitle %}{{ post.title }} - {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
@@ -37,5 +39,55 @@
       </div>
     </div>
 
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h2>Comments</h2>
+            <div id="comments">
+              {% for comment in comments %}
+                <article>
+                <h3>{{ comment.title }}</h3>
+                <div>{{ comment.text }}</div>
+                <span class="meta">commented by: {{ comment.author }} on {{ comment.created|date:"Y-m-d" }}</span>
+                </article>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </article>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form id="add_comment_form" action="{% url 'add-comment' %}" method="post" class="form-horizontal" role="form">
+          {% csrf_token %}
+          <input type="hidden" value="{{ post.pk }}" name="post" id="id_post" />
+          <div class="form-group">
+            <label for="title_id">Title</label>
+            {% for error in form.title.errors %}
+              {% include 'includes/form_error.html' %}
+            {% endfor %}
+            {{ form.title|addclasstofield:"form-control" }}
+          </div>
+          <div class="form-group">
+            <label for="author_id">Author</label>
+            {% for error in form.author.errors %}
+              {% include 'includes/form_error.html' %}
+            {% endfor %}
+            {{ form.author|addclasstofield:"form-control" }}
+          </div>
+          <div class="form-group">
+            <label for="text_id">Text</label>
+            {% for error in form.text.errors %}
+              {% include 'includes/form_error.html' %}
+            {% endfor %}
+            {{ form.text|addclasstofield:"form-control" }}
+          </div>
+          <button id="add_comment_submit" class="btn btn-primary" type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
 {% endblock content %}

@@ -9,12 +9,28 @@
 </ol>
 {% endblock breadcrumbs %}
 
+{% block header %}
+  <header class="intro-header edit-post">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <div class="site-heading">
+            <h1>Unleash Your Creativity</h1>
+            <hr class="small">
+            <span class="subheading">Remember to: be creative; be smart; be concise.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock header %}
+
 {% block content %}
 <div class="row">
   <div class="col-xs-8 col-xs-offset-2">
     <form action="." method="post" class="form-horizontal" role="form">
       {% include 'blog/include/post_form_fields.html' %}
-      <button class="btn btn-primary" type="submit" >Save</button>
+      <button class="btn btn-primary" type="submit">Save</button>
     </form>
   </div>
 </div>

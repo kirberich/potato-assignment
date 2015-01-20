@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
 import itertools
 
 from django.db import models
 from django.utils.text import slugify
+from django.core.urlresolvers import reverse
+
 from djangae.fields import RelatedSetField
 
 from ckeditor.fields import RichTextField
@@ -50,6 +53,17 @@ class Tag(BaseModel):
     @models.permalink
     def get_absolute_url(self):
         return ("tag", [self.slug, ])
+
+
+class Comment(BaseModel):
+
+    class Meta:
+        ordering = ("-created", )
+
+    author = models.CharField(max_length=50)
+    text = models.TextField(max_length=500)
+    created = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey("Post", related_name="comments", null=True)
 
 
 class Post(BaseModel):

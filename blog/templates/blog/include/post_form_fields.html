@@ -1,28 +1,28 @@
 {% load addclasstofield %}
 {% csrf_token %}
 <div class="form-group">
-  <label for="title">Title</label>
+  <label for="id_title">Title</label>
   {% for error in form.title.errors %}
     {% include 'includes/form_error.html' %}
   {% endfor %}
   {{ form.title|addclasstofield:"form-control" }}
 </div>
 <div class="form-group">
-  <label for="subtitle">Subtitle</label>
+  <label for="id_subtitle">Subtitle</label>
   {% for error in form.subtitle.errors %}
     {% include 'includes/form_error.html' %}
   {% endfor %}
   {{ form.subtitle|addclasstofield:"form-control" }}
 </div>
 <div class="form-group">
-  <label for="subtitle">Text</label>
+  <label for="id_text">Text</label>
   {% for error in form.text.errors %}
     {% include 'includes/form_error.html' %}
   {% endfor %}
   {{ form.text|addclasstofield:"form-control" }}
 </div>
 <div class="form-group" data-url="{% url 'tags-json' %}">
-  <label for="subtitle">Tags</label>
+  <label for="id_tags">Tags</label>
   {% for error in form.tags.errors %}
     {% include 'includes/form_error.html' %}
   {% endfor %}

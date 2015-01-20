@@ -23,6 +23,19 @@ indexes:
   - name: class
   - name: title
 
+- kind: blog_comment
+  properties:
+  - name: created
+    direction: desc
+  - name: __key__
+    direction: desc
+
+- kind: blog_comment
+  properties:
+  - name: post_id
+  - name: created
+    direction: desc
+
 - kind: blog_post
   properties:
   - name: __key__
@@ -68,18 +81,18 @@ indexes:
   - name: title
   - name: slug
 
+- kind: djangae_gaedatastoreuser
+  properties:
+  - name: __key__
+    direction: desc
+
+- kind: djangae_group
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: django_admin_log
   properties:
   - name: user_id
   - name: action_time
     direction: desc
-
-- kind: taggit_tag
-  properties:
-  - name: _idx_icontains_name
-  - name: name
-
-- kind: taggit_tag
-  properties:
-  - name: name
-  - name: slug

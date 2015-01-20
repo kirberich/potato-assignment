@@ -1,18 +1,22 @@
+# -*- coding: utf-8 -*-
 import json
+import datetime
 
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from django.views.generic.list import BaseListView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import CreateView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import requires_csrf_token
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.db.models import DateTimeField
 
 from .models import Post
 from .models import Tag
+from .models import Comment
 from .forms import PostForm
+from .forms import CommentForm
 
 import logging
 logging.basicConfig()
@@ -43,13 +47,20 @@ class PostView(DetailView):
     template_name = "blog/post.html"
     model = Post
 
+    def get_context_data(self, **kwargs):
+        queryset = super(PostView, self).get_context_data(**kwargs)
+        comments = Comment.objects.filter(post=queryset['post'])
+        queryset.update({"comments": comments,
+                         "form": CommentForm()})
+        return queryset
+
 
 class PostEdit(UpdateView):
     """ Edit a single post
     """
     template_name = "blog/post_edit.html"
-    form_class = PostForm
     model = Post
+    form_class = PostForm
 
     @method_decorator(requires_csrf_token)
     @method_decorator(login_required)
@@ -78,10 +89,19 @@ class TagsView(ListView):
     paginate_by = 2
 
 
+class TagView(DetailView):
+    """ The detail view of a single tag
+    """
+    model = Tag
+    context_object_name = "tag"
+    template_name = "blog/tag.html"
+
+
 class JSONResponseMixin(object):
-    def render_to_response(self, context):
+    def render_to_response(self, context, **httpresponse_kwargs):
         "Returns a JSON response containing 'context' as payload"
-        return self.get_json_response(self.convert_context_to_json(context))
+        return self.get_json_response(self.convert_context_to_json(context),
+                                      **httpresponse_kwargs)
 
     def get_json_response(self, content, **httpresponse_kwargs):
         "Construct an `HttpResponse` object."
@@ -94,19 +114,62 @@ class JSONResponseMixin(object):
         return json.dumps(context)
 
 
-class JsonTagsView(JSONResponseMixin, BaseListView):
+class JSONFormMixin(JSONResponseMixin):
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form,
+                                        success=False)
+        return self.render_to_response(context)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        context = self.get_context_data(form=form,
+                                        obj=self.object,
+                                        success=True)
+        return self.render_to_response(context)
+
+
+class JSONCommentAdd(JSONFormMixin, CreateView):
+    """ View to add comment. Posting to this from post.html
+    """
+    model = Comment
+
+    @method_decorator(requires_csrf_token)
+    def dispatch(self, *args, **kwargs):
+        return super(JSONCommentAdd, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        success = kwargs.get('success', False)
+        options = kwargs.get('options', {})
+        to_json = {}
+        fields = {}
+        to_json.update(options=options)
+        to_json.update(success=success)
+
+        if not success:
+            form = kwargs.get('form')
+            for field_name, field in form.fields.items():
+                fields[field_name] = unicode(form[field_name].value())
+            to_json.update(fields=fields)
+            if form.errors:
+                errors = {'non_field_errors': form.non_field_errors()}
+            fields = {}
+            for field_name, text in form.errors.items():
+                fields[field_name] = text
+            errors.update(fields=fields)
+            to_json.update(errors=errors)
+        else:
+            obj = kwargs.get('obj')
+            to_json.update({"title": obj.title,
+                            "text": obj.text,
+                            "author": obj.author,
+                            "created": obj.created.strftime("%Y-%m-%d")})
+        return json.dumps(to_json)
+
+
+class JSONTagsView(JSONResponseMixin, ListView):
 
     model = Tag
 
     def get_context_data(self, **kwargs):
-        import pdb; pdb.set_trace()
         queryset = kwargs.pop('object_list', self.object_list)
         return [(tag.pk, tag.title) for tag in queryset]
-
-
-class TagView(DetailView):
-    """ The detail view of a single tag
-    """
-    model = Tag
-    context_object_name = "tag"
-    template_name = "blog/tag.html"

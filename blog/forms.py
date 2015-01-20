@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from django import forms
 
 from .models import Post
 from .models import Tag
+from .models import Comment
 
 
 class ModelMultipleSelect2Field(forms.ModelMultipleChoiceField):
@@ -25,3 +27,10 @@ class PostForm(forms.ModelForm):
         exclude = ['slug', ]
 
     tags = ModelMultipleSelect2Field(queryset=Tag.objects.all())
+
+
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        exclude = ['slug', ]
