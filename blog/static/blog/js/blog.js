@@ -34,31 +34,4 @@ $(function() {
             }
         });
     });
-    $(".delete-link").on("click", function(evt){
-        evt.preventDefault();
-        var dialog_id = $(this).data("dialog");
-        alert(dialog_id);
-        $("#" + dialog_id).dialog({
-          resizable: false,
-          height:140,
-          modal: true,
-          buttons: {
-            "Delete item": function() {
-                $.ajax({
-                    // TODO!!!!!!!!!!!!!!!!!!
-                    url: $(this).attr("href"),
-                    type: 'POST',
-                    dataType: 'json',
-                    context: dialog_id,
-                    success: function(response) {
-                        $("#" + dialog_id).dialog( "close" );
-                    }
-                });
-             },
-            Cancel: function() {
-              $( this ).dialog( "close" );
-            }
-          }
-        });
-    });
 });

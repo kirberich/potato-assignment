@@ -3,9 +3,12 @@ import json
 
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.views.generic.list import BaseListView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import CreateView
+from django.views.generic.edit import BaseCreateView
 from django.views.generic.edit import DeleteView
+from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import requires_csrf_token
 from django.contrib.auth.decorators import login_required
@@ -99,7 +102,7 @@ class TagView(DetailView):
     template_name = "blog/tag.html"
 
 
-class JSONResponseMixin(object):
+class JSONView(View):
     def render_to_response(self, context, **httpresponse_kwargs):
         "Returns a JSON response containing 'context' as payload"
         return self.get_json_response(self.convert_context_to_json(context),
@@ -116,34 +119,7 @@ class JSONResponseMixin(object):
         return json.dumps(context)
 
 
-class JSONFormMixin(JSONResponseMixin):
-    def form_invalid(self, form):
-        context = self.get_context_data(form=form,
-                                        success=False)
-        return self.render_to_response(context)
-
-    def form_valid(self, form):
-        self.object = form.save()
-        context = self.get_context_data(form=form,
-                                        obj=self.object,
-                                        success=True)
-        return self.render_to_response(context)
-
-
-class JSONDeletionMixin(JSONFormMixin):
-
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.delete()
-        context = self.get_context_data(success=True)
-        return self.render_to_response(context)
-
-    def get_context_data(self, **kwargs):
-        success = kwargs.get('success', False)
-        json.dumps({"success": success})
-
-
-class JSONPostDelete(JSONDeletionMixin, DeleteView):
+class JSONPostDelete(DeleteView):
     """ Remove a single post
     """
 
@@ -156,10 +132,22 @@ class JSONPostDelete(JSONDeletionMixin, DeleteView):
         return super(JSONPostDelete, self).dispatch(*args, **kwargs)
 
 
-class JSONCommentAdd(JSONFormMixin, CreateView):
+class JSONCommentAdd(JSONView, BaseCreateView):
     """ View to add comment. Posting to this from post.html
     """
     model = Comment
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form,
+                                        success=False)
+        return self.render_to_response(context)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        context = self.get_context_data(form=form,
+                                        obj=self.object,
+                                        success=True)
+        return self.render_to_response(context)
 
     @method_decorator(requires_csrf_token)
     def dispatch(self, *args, **kwargs):
@@ -174,12 +162,13 @@ class JSONCommentAdd(JSONFormMixin, CreateView):
         to_json.update(success=success)
 
         if not success:
+            errors = {}
             form = kwargs.get('form')
             for field_name, field in form.fields.items():
                 fields[field_name] = unicode(form[field_name].value())
             to_json.update(fields=fields)
             if form.errors:
-                errors = {'non_field_errors': form.non_field_errors()}
+                errors.update({'non_field_errors': form.non_field_errors()})
             fields = {}
             for field_name, text in form.errors.items():
                 fields[field_name] = text
@@ -194,7 +183,7 @@ class JSONCommentAdd(JSONFormMixin, CreateView):
         return json.dumps(to_json)
 
 
-class JSONTagsView(JSONResponseMixin, ListView):
+class JSONTagsView(JSONView, BaseListView):
 
     model = Tag
 

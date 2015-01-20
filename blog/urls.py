@@ -21,7 +21,7 @@ urlpatterns = patterns(
     url(r'^posts/(?P<slug>[-\w]+)/edit/$',
         PostEdit.as_view(),
         name="post-edit"),
-    url(r'^posts/(?P<slug>[-\w]+)/edit/$',
+    url(r'^posts/(?P<slug>[-\w]+)/delete/$',
         JSONPostDelete.as_view(),
         name="post-delete"),
     url(r'^tags/$', TagsView.as_view(), name="tags"),
