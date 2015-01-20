@@ -19,8 +19,8 @@ $(function() {
                                             '<p>' + response.text + '</p>' +
                                             '<span class="meta">commented by: ' + response.author + ' on '+ response.created +'</span>' +
                                         '</article>');
-                        $('html, body').animate({scrollTop: $("#comments").offset().top - 50}, 500);
-                        $("#comments article")[0].animate({backgroundColor:'blue'});
+                    $("#comments article:first").hide();
+                    $('html, body').animate({scrollTop: $("#comments").offset().top - 50}, 500, function(){$("#comments article:first").slideDown();});
                 } else {
                     $('.form-error').remove();
                     for(var error in response.errors.fields) { $('#add_comment_form #id_' + error).before(''+

@@ -1,8 +1,11 @@
 <p class="post-meta">
-  Posted on {{ post.created|date:"Y-m-d" }}
+  Posted on {{ post.created|date:"Y-m-d" }}<br />
+  {% if post.comments.count %}
+    Received <span class="badge">{{ post.comments.count }}</span> comments<br />
+  {% endif %}
   {% for tag in post.tags.all %}
     {% if forloop.first %}
-      under tags:
+      Categorized as:
     {% endif %}
     <span class="tag label label-primary">
       <a href="{% url 'tag' tag.slug %}">#{{ tag.title }}</a>
