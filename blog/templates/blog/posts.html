@@ -30,10 +30,39 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        {% if perms.blog.can_add_post %}
-          <a class="pull-right glyphicon glyphicon-plus" href="{% url 'add-post' %}"></a>
-        {% endif %}
         {% for post in posts %}
+	        <div class="actions pull-right">
+	        	{% if forloop.first %}
+    	        {% if perms.blog.can_add_post %}
+				        <div class="clearfix">
+				          <a class="pull-right btn btn-default" href="{% url 'add-post' %}">
+				          	<span class="glyphicon glyphicon-plus">New post</span>
+				          </a>
+				        </div>
+				        {% endif %}
+				      {% endif %}
+	          {% if perms.blog.can_edit_post %}
+	          	<div class="clearfix">
+		            <a class="pull-right btn btn-default" href="{{ post.get_edit_url }}">
+		            	<span class="glyphicon glyphicon-pencil">Edit post</span>
+		            </a>
+	            </div>
+	          {% endif %}
+	          {% if perms.blog.can_delete_post %}
+		          <div class="clearfix">
+		            <a class="pull-right btn btn-default delete-link" href="{{ post.get_delete_url }}"
+		            	 data-toggle="modal" data-target="#modal-{{ post.slug }}">
+		            	 <span class="glyphicon glyphicon-remove">Delete post</span>
+		            </a>
+	            </div>
+	            <div class="modal fade" id="modal-{{ post.slug }}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModal" aria-hidden="true">
+	            	<div class="modal-dialog">
+	        				<div class="modal-content">
+	        				</div>
+	      				</div>
+	    				</div>
+	        	{% endif %}
+	        </div>
         {% include 'blog/include/post_in_listing.html' %}
         {% empty %}
           <p>Sorry, no post in this blog.</p>

@@ -1,6 +1,2 @@
-blog_post:
-  title: [contains]
 blog_tag:
   title: [icontains]
-taggit_tag:
-  name: [icontains]

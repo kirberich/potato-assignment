@@ -6,6 +6,7 @@
 {% block breadcrumbs %}
 <ol class="breadcrumb">
   <li><a href="{% url 'homepage' %}">Home</a></li>
+  <li><a href="{% url 'posts' %}">Posts</a></li>
   <li class="active">Add new post </li>
 </ol>
 {% endblock breadcrumbs %}
@@ -32,6 +33,7 @@
     <form action="." method="post" class="form-horizontal" role="form">
       {% include 'blog/include/post_form_fields.html' %}
       <button class="btn btn-primary" type="submit">Add</button>
+      <a href={% url 'posts' %} class="btn btn-default">Cancel</a>
     </form>
   </div>
 </div>

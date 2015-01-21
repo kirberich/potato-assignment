@@ -59,8 +59,8 @@ INSTALLED_APPS = (
 )
 
 CKEDITOR_UPLOAD_PATH = "ck-uploads/"
-CKEDITOR_CONFIGS = {'default': {'toolbar': 'Basic', }, }
-CSP_EXCLUDE_URL_PREFIXES = ("/posts/add-new", "/posts/[-\w]+/edit")
+CKEDITOR_CONFIGS = {'default': {'toolbar': 'full', }, }
+CSP_EXCLUDE_URL_PREFIXES = ("/posts/add-new", "/posts/[-\w]+/edit", "/admin")
 MIDDLEWARE_CLASSES = (
     'djangae.contrib.security.middleware.AppEngineSecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

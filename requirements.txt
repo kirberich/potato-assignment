@@ -9,3 +9,4 @@ jsmin
 django_compressor
 coverage
 nose
+whoosh

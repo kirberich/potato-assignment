@@ -34,18 +34,6 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        {% if perms.blog.can_edit_post %}
-            <a class="pull-right glyphicon glyphicon-pencil" href="{{ post.get_edit_url }}"></a>
-          {% endif %}
-          {% if perms.blog.can_delete_post %}
-            <a class="pull-right delete-link glyphicon glyphicon-remove" href="{{ post.get_delete_url }}" data-toggle="modal" data-target="#modal-{{ post.slug }}"></a>
-            <div class="modal fade" id="modal-{{ post.slug }}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModal" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                </div>
-              </div>
-            </div>
-          {% endif %}
             {{ post.text|safe }}
         </div>
       </div>

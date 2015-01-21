@@ -15,13 +15,13 @@ from django.views.decorators.csrf import requires_csrf_token
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
-from django.db.models import Q
 
 from .models import Post
 from .models import Tag
 from .models import Comment
 from .forms import PostForm
 from .forms import CommentForm
+from .search import search
 
 import logging
 logging.basicConfig()
@@ -196,7 +196,8 @@ class JSONCommentAdd(JSONView, BaseCreateView):
 
 
 class JSONTagsView(JSONView, BaseListView):
-
+    """ Json view to get all tags for autocmpletion purpose
+    """
     model = Tag
 
     def get_context_data(self, **kwargs):
@@ -204,14 +205,17 @@ class JSONTagsView(JSONView, BaseListView):
         return [(tag.pk, tag.title) for tag in queryset]
 
 
-class JSONPostsView(JSONView, BaseListView):
+class JSONSearchView(JSONView, BaseListView):
+    """ Search view, which accepts search queries via url, like google.
+        accepts 2 params:
+        * q is the full text query
+        * f is the list of active filters narrowing the search
+    """
 
     def get_queryset(self):
-        q = self.request.GET.get("q", None)
-        if not q:
-            return Post.objects.all()
-        return Post.objects.filter(Q(title__contains=q) | Q(text__contains=q))
-
-    def get_context_data(self, **kwargs):
-        queryset = kwargs.pop('object_list', self.object_list)
-        return [(post.title, post.get_absolute_url()) for post in queryset]
+        q = self.request.GET.get('q', "").strip()
+        filters = self.request.GET.getlist('f', [])
+        query = q or "*"
+        raw_hits, facets, active_facets = search(
+            q=query, filters=filters, query_string=self.request.GET,)
+        return Post.objects.filter(pk__in=[h['pk'] for h in raw_hits])

@@ -4,7 +4,6 @@ from . import models
 
 
 class PostAdmin(admin.ModelAdmin):
-    search_fields = ('title', 'text', )
     list_filter = ('tags', )
     list_display = ('title', 'text', 'get_tags', 'created', 'modified', )
 

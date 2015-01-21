@@ -11,13 +11,14 @@ from .views import TagsView
 from .views import TagView
 from .views import JSONCommentAdd
 from .views import JSONTagsView
-from .views import JSONPostsView
+from .views import JSONSearchView
 
 urlpatterns = patterns(
     '',
     url(r'^$', HomepageView.as_view(), name="homepage"),
     url(r'^posts/$', PostsView.as_view(), name="posts"),
-    url(r'^posts/add-post/$', PostAdd.as_view(), name="add-post"),
+    url(r'^posts/search/$', JSONSearchView.as_view(), name="posts"),
+    url(r'^posts/add-new/$', PostAdd.as_view(), name="add-post"),
     url(r'^posts/(?P<slug>[-\w]+)/$', PostView.as_view(), name="post"),
     url(r'^posts/(?P<slug>[-\w]+)/edit/$',
         PostEdit.as_view(),
@@ -28,6 +29,6 @@ urlpatterns = patterns(
     url(r'^tags/$', TagsView.as_view(), name="tags"),
     url(r'^tags/(?P<slug>[-\w]+)/$', TagView.as_view(), name="tag"),
     url(r'^tags-json/$', JSONTagsView.as_view(), name="tags-json"),
-    url(r'^posts-json/$', JSONPostsView.as_view(), name="posts-json"),
-    url(r'^add-comment/$', JSONCommentAdd.as_view(), name="add-comment"),
+    #url(r'^posts-json/$', JSONPostsView.as_view(), name="posts-json"),
+    url(r'^comments/add-new/$', JSONCommentAdd.as_view(), name="add-comment"),
 )

@@ -27,7 +27,7 @@
 .label
 {
   font-weight: normal;
-  font-size: 90%;
+  font-size: 80%;
 }
 
 /* Bootstrap knows alert-danger and not alert-error */
@@ -42,6 +42,19 @@
 
 h1 .label a {
   color: white;
+}
+
+.actions > div
+{
+    margin:5px 0px;
+}
+
+.actions .btn
+{
+    padding: 6px 12px;
+    width: 150px;
+    line-height: 20px;
+    text-align: middle;
 }
 
 @media only screen and (min-width: 768px) {

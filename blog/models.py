@@ -4,10 +4,24 @@ import itertools
 from django.db import models
 from django.utils.text import slugify
 from django.core.validators import MaxLengthValidator
+from django.core.validators import RegexValidator
 
 from djangae.fields import RelatedSetField
 
 from ckeditor.fields import RichTextField
+
+# from . import validators
+
+#try:
+#    from PIL import Image, _imaging
+#except ImportError:
+#    try:
+#        import Image, _imaging
+#    except ImportError:
+#        Image = None
+
+title_validator = RegexValidator(r'^[^\t]*$',
+                                 "'#' is a disallowed chars in the title.'")
 
 
 class BaseModel(models.Model):
@@ -16,7 +30,8 @@ class BaseModel(models.Model):
         abstract = True
 
     title = models.CharField(verbose_name="Title",
-                             max_length=50,)
+                             max_length=50,
+                             validators=[title_validator])
     slug = models.SlugField(verbose_name="Slug",
                             max_length=50,
                             editable=True,
@@ -77,6 +92,9 @@ class Post(BaseModel):
     subtitle = models.CharField(verbose_name="Subtitle",
                                 max_length=100,)
     text = RichTextField()
+ #   image = models.ImageField(validator_list=[validators.ImageWidth(1900, 250,
+ #           _("The image must be 620x250px large!")), ],
+ #           help_text=_("Image must be 620x250px large."))
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     tags = RelatedSetField(Tag, related_name="posts", blank=True)
@@ -92,3 +110,30 @@ class Post(BaseModel):
     @models.permalink
     def get_delete_url(self):
         return ("post-delete", [self.slug, ])
+
+    def index_text(self):
+        """ Text indexed for fulltext search
+        """
+        elems = [self.title, self.subtitle, self.text, ]
+        tags = [unicode(t.title) for t in self.tags.all()]
+        comments = itertools.chain(*[(unicode(c.title), unicode(c.title))
+                                   for c in self.comments.all()])
+        elems.extend(tags)
+        elems.extend(comments)
+        return unicode(" ".join(elems))
+
+    def index_tags(self, sep="\t"):
+        """ Returns a string representing all the post tsgs separated by
+            the sep val.
+            Needed to index the tags as listid in whoosh and have facets
+        """
+        return sep.join([unicode(t.slug) for t in self.tags.all()])
+
+    def index_all(self):
+        """ Returns a dictionary representing the whoosh entry for
+            the current object in the index
+        """
+        return dict(id=unicode(self.id),
+                    text=self.index_text(),
+                    tags=self.index_tags(),
+                    )
