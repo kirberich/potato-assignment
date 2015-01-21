@@ -22,6 +22,9 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        {% if perms.blog.can_add_post %}
+          <a class="pull-right glyphicon glyphicon-plus" href="{% url 'add-post' %}"></a>
+        {% endif %}
     	  {% for post in posts %}
           {% include 'blog/include/post_in_listing.html' %}
           {% empty %}

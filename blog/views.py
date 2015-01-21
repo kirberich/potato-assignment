@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 
+from django.core.urlresolvers import reverse
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.list import BaseListView
@@ -14,6 +15,7 @@ from django.views.decorators.csrf import requires_csrf_token
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
+from django.db.models import Q
 
 from .models import Post
 from .models import Tag
@@ -119,17 +121,27 @@ class JSONView(View):
         return json.dumps(context)
 
 
-class JSONPostDelete(DeleteView):
+class PostDelete(DeleteView):
     """ Remove a single post
     """
 
     model = Post
 
+    def get_success_url(self):
+        return reverse("posts")
+
     @method_decorator(requires_csrf_token)
     @method_decorator(login_required)
     @method_decorator(permission_required('blog.post_delete'))
-    def dispatch(self, *args, **kwargs):
-        return super(JSONPostDelete, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        response = super(PostDelete, self).dispatch(request, *args, **kwargs)
+        pk = request.POST.get("post")
+        # If not pk I'm in the confirmation view
+        if pk:
+            # Dirty hack to wait to return until GAE really removed my object
+            while Post.objects.filter(pk=pk).exists():
+                pass
+        return response
 
 
 class JSONCommentAdd(JSONView, BaseCreateView):
@@ -190,3 +202,16 @@ class JSONTagsView(JSONView, BaseListView):
     def get_context_data(self, **kwargs):
         queryset = kwargs.pop('object_list', self.object_list)
         return [(tag.pk, tag.title) for tag in queryset]
+
+
+class JSONPostsView(JSONView, BaseListView):
+
+    def get_queryset(self):
+        q = self.request.GET.get("q", None)
+        if not q:
+            return Post.objects.all()
+        return Post.objects.filter(Q(title__contains=q) | Q(text__contains=q))
+
+    def get_context_data(self, **kwargs):
+        queryset = kwargs.pop('object_list', self.object_list)
+        return [(post.title, post.get_absolute_url()) for post in queryset]

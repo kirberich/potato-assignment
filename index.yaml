@@ -67,6 +67,12 @@ indexes:
 
 - kind: blog_tag
   properties:
+  - name: created
+  - name: slug
+  - name: title
+
+- kind: blog_tag
+  properties:
   - name: slug
   - name: title
 
@@ -75,6 +81,12 @@ indexes:
   - name: title
   - name: __key__
     direction: desc
+
+- kind: blog_tag
+  properties:
+  - name: title
+  - name: created
+  - name: slug
 
 - kind: blog_tag
   properties:

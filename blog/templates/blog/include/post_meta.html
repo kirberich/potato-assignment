@@ -1,5 +1,5 @@
 <p class="post-meta">
-  Posted on {{ post.created|date:"Y-m-d" }}<br />
+  Posted on {{ post.created|date:"Y-m-d ~ H:i" }}<br />
   {% if post.comments.count %}
     Received <span class="badge">{{ post.comments.count }}</span> comments<br />
   {% endif %}

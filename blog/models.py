@@ -40,12 +40,14 @@ class BaseModel(models.Model):
         self.slug = new
         super(BaseModel, self).save(*args, **kwargs)
         # Dirty hack to redirect only if the content has really been created
-        # in the datastore and not only queued
+        # in the datastore and not only queued)
         while not self.__class__.objects.filter(slug=new).exists():
             pass
 
 
 class Tag(BaseModel):
+
+    created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ("title", )
