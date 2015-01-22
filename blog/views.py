@@ -9,6 +9,7 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import BaseCreateView
 from django.views.generic.edit import DeleteView
+from django.views.generic.edit import ProcessFormView
 from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import requires_csrf_token
@@ -104,23 +105,6 @@ class TagView(DetailView):
     template_name = "blog/tag.html"
 
 
-class JSONView(View):
-    def render_to_response(self, context, **httpresponse_kwargs):
-        "Returns a JSON response containing 'context' as payload"
-        return self.get_json_response(self.convert_context_to_json(context),
-                                      **httpresponse_kwargs)
-
-    def get_json_response(self, content, **httpresponse_kwargs):
-        "Construct an `HttpResponse` object."
-        return HttpResponse(content,
-                            content_type='application/json',
-                            **httpresponse_kwargs)
-
-    def convert_context_to_json(self, context):
-        "Convert the context dictionary into a JSON object"
-        return json.dumps(context)
-
-
 class PostDelete(DeleteView):
     """ Remove a single post
     """
@@ -142,6 +126,23 @@ class PostDelete(DeleteView):
             while Post.objects.filter(pk=pk).exists():
                 pass
         return response
+
+
+class JSONView(View):
+    def render_to_response(self, context, **httpresponse_kwargs):
+        "Returns a JSON response containing 'context' as payload"
+        return self.get_json_response(self.convert_context_to_json(context),
+                                      **httpresponse_kwargs)
+
+    def get_json_response(self, content, **httpresponse_kwargs):
+        "Construct an `HttpResponse` object."
+        return HttpResponse(content,
+                            content_type='application/json',
+                            **httpresponse_kwargs)
+
+    def convert_context_to_json(self, context):
+        "Convert the context dictionary into a JSON object"
+        return json.dumps(context)
 
 
 class JSONCommentAdd(JSONView, BaseCreateView):
@@ -168,31 +169,31 @@ class JSONCommentAdd(JSONView, BaseCreateView):
     def get_context_data(self, **kwargs):
         success = kwargs.get('success', False)
         options = kwargs.get('options', {})
-        to_json = {}
+        result = {}
         fields = {}
-        to_json.update(options=options)
-        to_json.update(success=success)
+        result.update(options=options)
+        result.update(success=success)
 
         if not success:
             errors = {}
             form = kwargs.get('form')
             for field_name, field in form.fields.items():
                 fields[field_name] = unicode(form[field_name].value())
-            to_json.update(fields=fields)
+            result.update(fields=fields)
             if form.errors:
                 errors.update({'non_field_errors': form.non_field_errors()})
             fields = {}
             for field_name, text in form.errors.items():
                 fields[field_name] = text
             errors.update(fields=fields)
-            to_json.update(errors=errors)
+            result.update(errors=errors)
         else:
             obj = kwargs.get('obj')
-            to_json.update({"title": obj.title,
-                            "text": obj.text,
-                            "author": obj.author,
-                            "created": obj.created.strftime("%Y-%m-%d")})
-        return json.dumps(to_json)
+            result.update({"title": obj.title,
+                           "text": obj.text,
+                           "author": obj.author,
+                           "created": obj.created.strftime("%Y-%m-%d~%H:%M")})
+        return result
 
 
 class JSONTagsView(JSONView, BaseListView):
@@ -205,17 +206,36 @@ class JSONTagsView(JSONView, BaseListView):
         return [(tag.pk, tag.title) for tag in queryset]
 
 
-class JSONSearchView(JSONView, BaseListView):
+class JSONSearchView(JSONView):
     """ Search view, which accepts search queries via url, like google.
         accepts 2 params:
         * q is the full text query
         * f is the list of active filters narrowing the search
     """
 
-    def get_queryset(self):
-        q = self.request.GET.get('q', "").strip()
-        filters = self.request.GET.getlist('f', [])
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        q = self.request.POST.get('q', "").strip()
+        filters = self.request.POST.getlist('f', [])
         query = q or "*"
         raw_hits, facets, active_facets = search(
             q=query, filters=filters, query_string=self.request.GET,)
-        return Post.objects.filter(pk__in=[h['pk'] for h in raw_hits])
+        queryset = Post.objects.filter(pk__in=[h['pk'] for h in raw_hits])
+        return {"success": True,
+                "posts": [{"title": post.title,
+                           "url": post.get_absolute_url(),
+                           "subtitle": post.subtitle,
+                           "created": post.created.strftime("%Y-%m-%d~%H:%M"),
+                           "comments_count": post.comments.all().count(),
+                           "tags": [{"title": t.title,
+                                     "url": t.get_absolute_url()}
+                                    for t in post.tags.all()]
+                           } for post in queryset]
+                }
+
+    @method_decorator(requires_csrf_token)
+    def dispatch(self, *args, **kwargs):
+        return super(JSONSearchView, self).dispatch(*args, **kwargs)

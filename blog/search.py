@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
+import re
+
 from django.db.models import signals
 
 from whoosh import fields, qparser, sorting, query
 from whoosh.filedb.gae import DatastoreStorage
+from whoosh.writing import AsyncWriter
 
 from .models import Post
 
 schema = {"pk": fields.ID(stored=True, unique=True),
           "text": fields.TEXT(),
-          "tags": fields.IDLIST(stored=True),
+          "tags": fields.IDLIST(stored=True, expression=re.compile(r"[^\t]+")),
           }
 
 WHOOSH_SCHEMA = fields.Schema(**schema)
@@ -32,7 +35,7 @@ def delete_index(sender=None, **kwargs):
     """ Deletes the index schema and eventually the contained data
     """
     ix = get_or_create_index()
-    ix.delete()
+    ix.storage.destroy()
 
 
 def recreate_index(sender=None, **kwargs):
@@ -49,16 +52,16 @@ def update_index(sender, **kwargs):
         index every new or modified Object
     """
     ix = get_or_create_index()
-    writer = ix.writer()
+    writer = AsyncWriter(ix)
     obj = kwargs['instance']
     if "created" in kwargs and kwargs['created']:
-            writer.add_document(**obj.index())
+        writer.add_document(**obj.index())
     else:
         writer.update_document(**obj.index())
     writer.commit()
 
-signals.post_save.connect(update_index, sender=Post)
-signals.m2m_changed.connect(update_index, sender=Post.tags)
+# signals.post_save.connect(update_index, sender=Post)
+# signals.m2m_changed.connect(update_index, sender=Post.tags)
 
 
 def recreate_data(sender=None, **kwargs):
@@ -66,10 +69,10 @@ def recreate_data(sender=None, **kwargs):
         will be duplicated
     """
     ix = get_or_create_index()
-    writer = ix.writer()
+    writer = AsyncWriter(ix)
     for obj in Post.objects.all():
-        writer.add_document(**obj.index_features())
-        writer.commit()
+        writer.add_document(**obj.index())
+    writer.commit()
 
 
 def recreate_all(sender=None, **kwargs):
@@ -89,7 +92,7 @@ def search(q, filters, query_string, max_facets=5):
     ix = get_or_create_index()
     hits = []
 
-    facets = [sorting.FieldFacet("tag", allow_overlap=True,
+    facets = [sorting.FieldFacet("tags", allow_overlap=True,
                                  maptype=sorting.Count)]
     parser = qparser.QueryParser("text", schema=ix.schema)  # , group=og)
     parser.add_plugin(qparser.FuzzyTermPlugin())
@@ -106,6 +109,5 @@ def search(q, filters, query_string, max_facets=5):
             filter_name, filter_value = filter.split(":", 1)
             q = q & query.Term(filter_name, filter_value)
         hits = searcher.search(q.normalize(), groupedby=facets)
-        import pdb; pdb.set_trace()
         active_facets = []
         return hits, facets, active_facets

@@ -57,6 +57,11 @@ h1 .label a {
     text-align: middle;
 }
 
+#search-form
+{
+  line-height: 60px;
+  margin: auto;
+}
 @media only screen and (min-width: 768px) {
   #custom-brand
   {

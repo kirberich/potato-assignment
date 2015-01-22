@@ -127,13 +127,13 @@ class Post(BaseModel):
             the sep val.
             Needed to index the tags as listid in whoosh and have facets
         """
-        return sep.join([unicode(t.slug) for t in self.tags.all()])
+        return unicode(sep.join([t.slug for t in self.tags.all()]))
 
-    def index_all(self):
+    def index(self):
         """ Returns a dictionary representing the whoosh entry for
             the current object in the index
         """
-        return dict(id=unicode(self.id),
+        return dict(pk=unicode(self.pk),
                     text=self.index_text(),
                     tags=self.index_tags(),
                     )
