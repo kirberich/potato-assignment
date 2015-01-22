@@ -9,7 +9,6 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import BaseCreateView
 from django.views.generic.edit import DeleteView
-from django.views.generic.edit import ProcessFormView
 from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import requires_csrf_token

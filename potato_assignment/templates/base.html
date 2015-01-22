@@ -16,6 +16,8 @@
 	<link href="{% static "css/bootstrap.css" %}" rel="stylesheet" />
 	<link href="{% static "css/bootstrap-theme.css" %}" rel="stylesheet" />
 	<link href="{% static "css/select2.css" %}" rel="stylesheet" />
+	<link href="{% static "css/font-awesome.css" %}" rel="stylesheet" />
+	<link href="{% static "css/bootstrap-social.css" %}" rel="stylesheet" />
 	<link href="{% static "blog/css/blog.css" %}" rel="stylesheet" />
   <link href="{% static "css/custom.css" %}" rel="stylesheet" />
 	{% endcompress %}
@@ -120,29 +122,20 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-          <ul class="list-inline text-center">
+          <ul class="list-inline text-center" id="social-wrapper">
             <li>
-              <a href="#">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                </span>
+              <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" class="btn">
+                <i class="fa fa-facebook"></i> | Facebook
               </a>
             </li>
             <li>
-              <a href="#">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                </span>
+              <a target="_blank" href="https://twitter.com/home?status={{ request.build_absolute_uri|urlencode }}" class="btn">
+                <i class="fa fa-twitter"></i> | Twitter
               </a>
             </li>
             <li>
-              <a href="#">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                </span>
+              <a target="_blank" href="https://plus.google.com/share?url={{ request.build_absolute_uri|urlencode }}" class="btn">
+                <i class="fa fa-google-plus"></i> | Google+
               </a>
             </li>
           </ul>
@@ -153,4 +146,3 @@
   </footer>
 </body>
 </html>
-

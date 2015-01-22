@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'djangosecure',
     'csp',
+    'corsheaders',
     'djangae.contrib.gauth',
     'djangae',
     'blog',
@@ -60,10 +61,10 @@ INSTALLED_APPS = (
 
 CKEDITOR_UPLOAD_PATH = "ck-uploads/"
 CKEDITOR_CONFIGS = {'default': {'toolbar': 'full', }, }
-CSP_EXCLUDE_URL_PREFIXES = ("/posts/add-new", "/posts/[-\w]+/edit", "/admin")
 MIDDLEWARE_CLASSES = (
     'djangae.contrib.security.middleware.AppEngineSecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'djangae.contrib.gauth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -81,6 +82,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
+    "django.core.context_processors.request",
     "session_csrf.context_processor"
 )
 
@@ -140,10 +142,13 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-if DEBUG:
-    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval")
-    # Use nose to run all tests
 CSP_DEFAULT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval")
+CSP_CONNECT_SRC = ("https://plus.google.com", "https://www.facebook.com", "https://twitter.com")
 
+CORS_ORIGIN_WHITELIST = (
+    'google.com',
+    'facebook.com',
+    'twitter.com',
+)
 
 from djangae.contrib.gauth.settings import *

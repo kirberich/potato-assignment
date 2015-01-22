@@ -10,18 +10,7 @@ from djangae.fields import RelatedSetField
 
 from ckeditor.fields import RichTextField
 
-# from . import validators
-
-#try:
-#    from PIL import Image, _imaging
-#except ImportError:
-#    try:
-#        import Image, _imaging
-#    except ImportError:
-#        Image = None
-
-title_validator = RegexValidator(r'^[^\t]*$',
-                                 "'#' is a disallowed chars in the title.'")
+from .validators import ImageSize
 
 
 class BaseModel(models.Model):
@@ -31,7 +20,11 @@ class BaseModel(models.Model):
 
     title = models.CharField(verbose_name="Title",
                              max_length=50,
-                             validators=[title_validator])
+                             validators=[
+                                 RegexValidator(
+                                     r'^[^\t]*$',
+                                     "tab are disallowed in the title.'"
+                                 )])
     slug = models.SlugField(verbose_name="Slug",
                             max_length=50,
                             editable=True,
@@ -92,9 +85,10 @@ class Post(BaseModel):
     subtitle = models.CharField(verbose_name="Subtitle",
                                 max_length=100,)
     text = RichTextField()
- #   image = models.ImageField(validator_list=[validators.ImageWidth(1900, 250,
- #           _("The image must be 620x250px large!")), ],
- #           help_text=_("Image must be 620x250px large."))
+    image = models.ImageField(upload_to="post_images",
+                              validators=[ImageSize(min_w=1900,
+                                                    max_w=1900), ],
+                              help_text="Image must be 1900px X 100-200px")
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     tags = RelatedSetField(Tag, related_name="posts", blank=True)
