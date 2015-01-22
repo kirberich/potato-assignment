@@ -143,7 +143,6 @@ STATICFILES_FINDERS = (
 )
 
 CSP_DEFAULT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval")
-CSP_CONNECT_SRC = ("https://plus.google.com", "https://www.facebook.com", "https://twitter.com")
 
 CORS_ORIGIN_WHITELIST = (
     'google.com',

@@ -11,13 +11,11 @@ from .views import TagsView
 from .views import TagView
 from .views import JSONCommentAdd
 from .views import JSONTagsView
-from .views import JSONSearchView
 
 urlpatterns = patterns(
     '',
     url(r'^$', HomepageView.as_view(), name="homepage"),
     url(r'^posts/$', PostsView.as_view(), name="posts"),
-    url(r'^posts/search/$', JSONSearchView.as_view(), name="posts-search"),
     url(r'^posts/add-new/$', PostAdd.as_view(), name="add-post"),
     url(r'^posts/(?P<slug>[-\w]+)/$', PostView.as_view(), name="post"),
     url(r'^posts/(?P<slug>[-\w]+)/edit/$',

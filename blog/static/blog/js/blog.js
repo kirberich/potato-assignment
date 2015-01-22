@@ -39,39 +39,10 @@ $(function() {
         //do something
         $.ajax({
             url: $('#search-form').attr("action"),
-            type: 'POST',
+            type: 'GET',
             data: $('#search-form').serializeArray(),
-            dataType: 'json',
             success: function(response) {
-                if(response.success){
-                    $("#content-wrapper").hide();
-                    $("#search-wrapper").html("<div class='container'><div class='row'><div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'></div></div></div>");
-                    $("#search-wrapper .row > div").append("<div class='clearfix'><a href='#' id='close-search' class='btn btn-default pull-right'>" +
-                                                           "<span class='glyphicon glyphicon-remove'>Chiudi risultati</span></a>" +
-                                                           "<span>" + response.posts.length + " results matched your query</span></div>");
-                    for(var i in response.posts)
-                    {
-                        var post = response.posts[i];
-                        tags = "";
-                        if(post.tags.length){
-                            tags += "<span>Categorized as: </span>";
-                        }
-                        for(var j in post.tags){
-                            var tag = post.tags[j];
-                            tags += "<span class='tag label label-primary'><a href='" + tag.url + "'>#" + tag.title + "</a></span>";
-                        }
-                        comments = "";
-                        if(post.comments_count > 0){
-                            comments = "<span>Received <span class='badge'>" + post.comments_count + "</span> comments</span>";
-                        }
-                        var result = "<div class='post-preview'>" +
-                                        "<a href='" + post.url + "'><h2 class='post-title'>" + post.title + "</h2></a>" +
-                                        "<h3 class='post-subtitle'>" + post.subtitle + "</h3>" +
-                                        "<p class='post-meta'>Posted on " + post.created + comments + tags + "</p>" +
-                                        "</div>"
-                        $("#search-wrapper .row > div").append($(result));
-                    }
-                }
+                $("#content-wrapper").html($(response).find("#content-wrapper").html());
             }
         });
     }

@@ -4,6 +4,7 @@ import json
 from django.core.urlresolvers import reverse
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.views.generic.list import MultipleObjectMixin
 from django.views.generic.list import BaseListView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import CreateView
@@ -37,12 +38,28 @@ class HomepageView(ListView):
 
 
 class PostsView(ListView):
-    """ View that shows all the posts sorted by creation and paginated
+    """ Search view, which accepts search queries via url, like google.
+    accepts 2 params:
+    * q is the full text query
+    * f is the list of active filters narrowing the search
     """
-    model = Post
     context_object_name = "posts"
     template_name = "blog/posts.html"
     paginate_by = 2
+    search_results = {}
+
+    def get_queryset(self):
+        query = self.request.GET.get('q', "").strip()
+        filters = self.request.GET.getlist('f', [])
+        self.search_results = search(q=query, filters=filters,
+                                     query_string=self.request.GET,)
+        hits = self.search_results.pop("hits")
+        return Post.objects.filter(pk__in=[h['pk'] for h in hits])
+
+    def get_context_data(self, **kwargs):
+        context = super(PostsView, self).get_context_data(**kwargs)
+        context.update(self.search_results)
+        return context
 
 
 class PostView(DetailView):
@@ -203,38 +220,3 @@ class JSONTagsView(JSONView, BaseListView):
     def get_context_data(self, **kwargs):
         queryset = kwargs.pop('object_list', self.object_list)
         return [(tag.pk, tag.title) for tag in queryset]
-
-
-class JSONSearchView(JSONView):
-    """ Search view, which accepts search queries via url, like google.
-        accepts 2 params:
-        * q is the full text query
-        * f is the list of active filters narrowing the search
-    """
-
-    def post(self, request, *args, **kwargs):
-        context = self.get_context_data()
-        return self.render_to_response(context)
-
-    def get_context_data(self, **kwargs):
-        q = self.request.POST.get('q', "").strip()
-        filters = self.request.POST.getlist('f', [])
-        query = q or "*"
-        raw_hits, facets, active_facets = search(
-            q=query, filters=filters, query_string=self.request.GET,)
-        queryset = Post.objects.filter(pk__in=[h['pk'] for h in raw_hits])
-        return {"success": True,
-                "posts": [{"title": post.title,
-                           "url": post.get_absolute_url(),
-                           "subtitle": post.subtitle,
-                           "created": post.created.strftime("%Y-%m-%d~%H:%M"),
-                           "comments_count": post.comments.all().count(),
-                           "tags": [{"title": t.title,
-                                     "url": t.get_absolute_url()}
-                                    for t in post.tags.all()]
-                           } for post in queryset]
-                }
-
-    @method_decorator(requires_csrf_token)
-    def dispatch(self, *args, **kwargs):
-        return super(JSONSearchView, self).dispatch(*args, **kwargs)

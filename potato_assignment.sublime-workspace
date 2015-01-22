@@ -4,39 +4,58 @@
 		"selected_items":
 		[
 			[
-				"font-",
-				"font-weight"
+				"json",
+				"json_view	(module)"
 			],
 			[
-				"as",
-				"as_view"
+				"referente_",
+				"referente_cell"
 			],
 			[
-				"posts",
-				"posts"
+				"referent",
+				"referente_email"
 			],
 			[
-				"Te",
-				"TestCase"
+				"referente",
+				"referente_nome"
+			],
+			[
+				"bol",
+				"bolder"
+			],
+			[
+				"sel",
+				"selected_facet"
+			],
+			[
+				"dest",
+				"dest_dir"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"contents": "713957764029942404031",
+			"file": "blog/views.py",
 			"settings":
 			{
-				"buffer_size": 21,
-				"line_ending": "Unix",
-				"name": "713957764029942404031"
+				"buffer_size": 8770,
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "blog/search.py",
 			"settings":
 			{
-				"buffer_size": 3429,
+				"buffer_size": 3506,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "sitepackages/django/views/generic/list.py",
+			"settings":
+			{
+				"buffer_size": 7014,
 				"line_ending": "Unix"
 			}
 		},
@@ -44,34 +63,121 @@
 			"file": "blog/models.py",
 			"settings":
 			{
-				"buffer_size": 4307,
+				"buffer_size": 4293,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "blog/management/commands/manage_index.py",
+			"file": "blog/templates/blog/post.html",
 			"settings":
 			{
-				"buffer_size": 1390,
+				"buffer_size": 3137,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "blog/urls.py",
+			"file": "potato_assignment/templates/base.html",
 			"settings":
 			{
-				"buffer_size": 1304,
+				"buffer_size": 5617,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "# -*- coding: utf-8 -*-\nimport json\n\nfrom django.core.urlresolvers import reverse\nfrom django.views.generic.detail import DetailView\nfrom django.views.generic.list import ListView\nfrom django.views.generic.list import BaseListView\nfrom django.views.generic.edit import UpdateView\nfrom django.views.generic.edit import CreateView\nfrom django.views.generic.edit import BaseCreateView\nfrom django.views.generic.edit import DeleteView\nfrom django.views.generic.base import View\nfrom django.utils.decorators import method_decorator\nfrom django.views.decorators.csrf import requires_csrf_token\nfrom django.contrib.auth.decorators import login_required\nfrom django.contrib.auth.decorators import permission_required\nfrom django.http import HttpResponse\n\nfrom .models import Post\nfrom .models import Tag\nfrom .models import Comment\nfrom .forms import PostForm\nfrom .forms import CommentForm\nfrom .search import search\n\nimport logging\nlogging.basicConfig()\nlogger = logging.getLogger(\"blog.console\")\n\n\nclass HomepageView(ListView):\n    \"\"\" Homepage view that get the 3 latest created posts\n    \"\"\"\n    context_object_name = \"posts\"\n    template_name = \"blog/homepage.html\"\n    queryset = Post.objects.all()[:3]\n\n\nclass PostsView(ListView):\n    \"\"\" View that shows all the posts sorted by creation and paginated\n    \"\"\"\n    model = Post\n    context_object_name = \"posts\"\n    template_name = \"blog/posts.html\"\n    paginate_by = 2\n\n\nclass PostView(DetailView):\n    \"\"\" The detail view of a single post\n    \"\"\"\n    context_object_name = \"post\"\n    template_name = \"blog/post.html\"\n    model = Post\n\n    def get_context_data(self, **kwargs):\n        queryset = super(PostView, self).get_context_data(**kwargs)\n        comments = Comment.objects.filter(post=queryset['post'])\n        queryset.update({\"comments\": comments,\n                         \"form\": CommentForm()})\n        return queryset\n\n\nclass PostEdit(UpdateView):\n    \"\"\" Edit a single post\n    \"\"\"\n    template_name = \"blog/post_edit.html\"\n    model = Post\n    form_class = PostForm\n\n    @method_decorator(requires_csrf_token)\n    @method_decorator(login_required)\n    @method_decorator(permission_required(\"blog.post_edit\"))\n    def dispatch(self, *args, **kwargs):\n        return super(PostEdit, self).dispatch(*args, **kwargs)\n\n\nclass PostAdd(CreateView):\n    \"\"\" Add a single post\n    \"\"\"\n    template_name = \"blog/post_add.html\"\n    form_class = PostForm\n\n    @method_decorator(requires_csrf_token)\n    @method_decorator(login_required)\n    @method_decorator(permission_required('blog.post_add'))\n    def dispatch(self, *args, **kwargs):\n        return super(PostAdd, self).dispatch(*args, **kwargs)\n\n\nclass TagsView(ListView):\n    \"\"\" View that shows all the tags\n    \"\"\"\n    model = Tag\n    context_object_name = \"tags\"\n    template_name = \"blog/tags.html\"\n    paginate_by = 2\n\n\nclass TagView(DetailView):\n    \"\"\" The detail view of a single tag\n    \"\"\"\n    model = Tag\n    context_object_name = \"tag\"\n    template_name = \"blog/tag.html\"\n\n\nclass JSONView(View):\n    def render_to_response(self, context, **httpresponse_kwargs):\n        \"Returns a JSON response containing 'context' as payload\"\n        return self.get_json_response(self.convert_context_to_json(context),\n                                      **httpresponse_kwargs)\n\n    def get_json_response(self, content, **httpresponse_kwargs):\n        \"Construct an `HttpResponse` object.\"\n        return HttpResponse(content,\n                            content_type='application/json',\n                            **httpresponse_kwargs)\n\n    def convert_context_to_json(self, context):\n        \"Convert the context dictionary into a JSON object\"\n        return json.dumps(context)\n\n\nclass PostDelete(DeleteView):\n    \"\"\" Remove a single post\n    \"\"\"\n\n    model = Post\n\n    def get_success_url(self):\n        return reverse(\"posts\")\n\n    @method_decorator(requires_csrf_token)\n    @method_decorator(login_required)\n    @method_decorator(permission_required('blog.post_delete'))\n    def dispatch(self, request, *args, **kwargs):\n        response = super(PostDelete, self).dispatch(request, *args, **kwargs)\n        pk = request.POST.get(\"post\")\n        # If not pk I'm in the confirmation view\n        if pk:\n            # Dirty hack to wait to return until GAE really removed my object\n            while Post.objects.filter(pk=pk).exists():\n                pass\n        return response\n\n\nclass JSONCommentAdd(JSONView, BaseCreateView):\n    \"\"\" View to add comment. Posting to this from post.html\n    \"\"\"\n    model = Comment\n\n    def form_invalid(self, form):\n        context = self.get_context_data(form=form,\n                                        success=False)\n        return self.render_to_response(context)\n\n    def form_valid(self, form):\n        self.object = form.save()\n        context = self.get_context_data(form=form,\n                                        obj=self.object,\n                                        success=True)\n        return self.render_to_response(context)\n\n    @method_decorator(requires_csrf_token)\n    def dispatch(self, *args, **kwargs):\n        return super(JSONCommentAdd, self).dispatch(*args, **kwargs)\n\n    def get_context_data(self, **kwargs):\n        success = kwargs.get('success', False)\n        options = kwargs.get('options', {})\n        to_json = {}\n        fields = {}\n        to_json.update(options=options)\n        to_json.update(success=success)\n\n        if not success:\n            errors = {}\n            form = kwargs.get('form')\n            for field_name, field in form.fields.items():\n                fields[field_name] = unicode(form[field_name].value())\n            to_json.update(fields=fields)\n            if form.errors:\n                errors.update({'non_field_errors': form.non_field_errors()})\n            fields = {}\n            for field_name, text in form.errors.items():\n                fields[field_name] = text\n            errors.update(fields=fields)\n            to_json.update(errors=errors)\n        else:\n            obj = kwargs.get('obj')\n            to_json.update({\"title\": obj.title,\n                            \"text\": obj.text,\n                            \"author\": obj.author,\n                            \"created\": obj.created.strftime(\"%Y-%m-%d\")})\n        return json.dumps(to_json)\n\n\nclass JSONTagsView(JSONView, BaseListView):\n    \"\"\" Json view to get all tags for autocmpletion purpose\n    \"\"\"\n    model = Tag\n\n    def get_context_data(self, **kwargs):\n        queryset = kwargs.pop('object_list', self.object_list)\n        return [(tag.pk, tag.title) for tag in queryset]\n\n\nclass JSONSearchView(JSONView, BaseListView):\n    \"\"\" Search view, which accepts search queries via url, like google.\n        accepts 2 params:\n        * q is the full text query\n        * f is the list of active filters narrowing the search\n    \"\"\"\n\n    def get_queryset(self):\n        q = self.request.GET.get('q', \"\").strip()\n        filters = self.request.GET.getlist('f', [])\n        query = q or \"*\"\n        raw_hits, facets, active_facets = search(\n            q=query, filters=filters, query_string=self.request.GET,)\n        return Post.objects.filter(pk__in=[h['pk'] for h in raw_hits])\n\n    def get_context_data(self, **kwargs):\n        queryset = kwargs.pop('object_list', self.object_list)\n        return [(tag.pk, tag.title) for tag in queryset]",
-			"file": "blog/views.py",
-			"file_size": 7173,
-			"file_write_time": 130663488211795035,
+			"file": "blog/static/blog/js/blog.js",
 			"settings":
 			{
-				"buffer_size": 7335,
+				"buffer_size": 4992,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "potato_assignment/settings.py",
+			"settings":
+			{
+				"buffer_size": 4388,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "potato_assignment/urls.py",
+			"settings":
+			{
+				"buffer_size": 966,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "potato_assignment/wsgi.py",
+			"settings":
+			{
+				"buffer_size": 650,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "/home/creepingdeath/django/sitepackages/google_appengine/google/appengine/tools/devappserver2/endpoints/endpoints_server.py:\n   58  \n   59  # Internal constants\n   60: _CORS_HEADER_ORIGIN = 'Origin'\n   61: _CORS_HEADER_REQUEST_METHOD = 'Access-Control-Request-Method'\n   62: _CORS_HEADER_REQUEST_HEADERS = 'Access-Control-Request-Headers'\n   63: _CORS_HEADER_ALLOW_ORIGIN = 'Access-Control-Allow-Origin'\n   64: _CORS_HEADER_ALLOW_METHODS = 'Access-Control-Allow-Methods'\n   65: _CORS_HEADER_ALLOW_HEADERS = 'Access-Control-Allow-Headers'\n   66: _CORS_ALLOWED_METHODS = frozenset(('DELETE', 'GET', 'PATCH', 'POST', 'PUT'))\n   67  \n   68  \n   ..\n  158      If the request matches one of our reserved URLs, this calls\n  159      start_response and returns the response body.  This also handles OPTIONS\n  160:     CORS requests.\n  161  \n  162      Args:\n  ...\n  327  \n  328    class __CheckCorsHeaders(object):\n  329:     \"\"\"Track information about CORS headers and our response to them.\"\"\"\n  330  \n  331      def __init__(self, request):\n  ...\n  338  \n  339      def __check_cors_request(self, request):\n  340:       \"\"\"Check for a CORS request, and see if it gets a CORS response.\"\"\"\n  341:       # Check for incoming CORS headers.\n  342:       self.origin = request.headers[_CORS_HEADER_ORIGIN]\n  343:       self.cors_request_method = request.headers[_CORS_HEADER_REQUEST_METHOD]\n  344        self.cors_request_headers = request.headers[\n  345:           _CORS_HEADER_REQUEST_HEADERS]\n  346  \n  347:       # Check if the request should get a CORS response.\n  348        if (self.origin and\n  349            ((self.cors_request_method is None) or\n  350:            (self.cors_request_method.upper() in _CORS_ALLOWED_METHODS))):\n  351          self.allow_cors_request = True\n  352  \n  353      def update_headers(self, headers_in):\n  354:       \"\"\"Add CORS headers to the response, if needed.\"\"\"\n  355        if not self.allow_cors_request:\n  356          return\n  357  \n  358:       # Add CORS headers.\n  359        headers = wsgiref.headers.Headers(headers_in)\n  360:       headers[_CORS_HEADER_ALLOW_ORIGIN] = self.origin\n  361:       headers[_CORS_HEADER_ALLOW_METHODS] = ','.join(tuple(\n  362:           _CORS_ALLOWED_METHODS))\n  363        if self.cors_request_headers is not None:\n  364:         headers[_CORS_HEADER_ALLOW_HEADERS] = self.cors_request_headers\n  365  \n  366    def handle_spi_response(self, orig_request, spi_request, response,\n\n/home/creepingdeath/django/sitepackages/google_appengine/google/appengine/tools/devappserver2/endpoints/endpoints_server_test.py:\n  408  \n  409    def test_handle_non_json_spi_response_cors(self):\n  410:     \"\"\"Test that an error response still handles CORS headers.\"\"\"\n  411      server_response = dispatcher.ResponseTuple(\n  412          '200 OK', [('Content-type', 'text/plain')],\n  ...\n  420    def check_cors(self, request_headers, expect_response, expected_origin=None,\n  421                   expected_allow_headers=None, server_response=None):\n  422:     \"\"\"Check that CORS headers are handled correctly.\n  423  \n  424      Args:\n  425        request_headers: A list of (header, value), to be used as headers in the\n  426          request.\n  427:       expect_response: A boolean, whether or not CORS headers are expected in\n  428          the response.\n  429        expected_origin: A string or None.  If this is a string, this is the value\n  ...\n  455      headers = dict(self.response_headers)\n  456      if expect_response:\n  457:       self.assertIn(endpoints_server._CORS_HEADER_ALLOW_ORIGIN, headers)\n  458        self.assertEqual(\n  459:           headers[endpoints_server._CORS_HEADER_ALLOW_ORIGIN],\n  460            expected_origin)\n  461  \n  462:       self.assertIn(endpoints_server._CORS_HEADER_ALLOW_METHODS, headers)\n  463        self.assertEqual(set(headers[\n  464:           endpoints_server._CORS_HEADER_ALLOW_METHODS].split(',')),\n  465:                        endpoints_server._CORS_ALLOWED_METHODS)\n  466  \n  467        if expected_allow_headers is not None:\n  468:         self.assertIn(endpoints_server._CORS_HEADER_ALLOW_HEADERS,\n  469                        headers)\n  470          self.assertEqual(\n  471:             headers[endpoints_server._CORS_HEADER_ALLOW_HEADERS],\n  472              expected_allow_headers)\n  473        else:\n  474:         self.assertNotIn(endpoints_server._CORS_HEADER_ALLOW_HEADERS,\n  475                           headers)\n  476      else:\n  477:       self.assertNotIn(endpoints_server._CORS_HEADER_ALLOW_ORIGIN,\n  478                         headers)\n  479:       self.assertNotIn(endpoints_server._CORS_HEADER_ALLOW_METHODS,\n  480                         headers)\n  481:       self.assertNotIn(endpoints_server._CORS_HEADER_ALLOW_HEADERS,\n  482                         headers)\n  483      return ''.join(response)\n  484  \n  485    def test_handle_cors(self):\n  486:     \"\"\"Test CORS support on a regular request.\"\"\"\n  487      self.check_cors([('origin', 'test.com')], True, 'test.com')\n  488  \n  489    def test_handle_cors_preflight(self):\n  490:     \"\"\"Test a CORS preflight request.\"\"\"\n  491      self.check_cors([('origin', 'http://example.com'),\n  492                       ('Access-control-request-method', 'GET')], True,\n  ...\n  494  \n  495    def test_handle_cors_preflight_invalid(self):\n  496:     \"\"\"Test a CORS preflight request for an unaccepted OPTIONS request.\"\"\"\n  497      self.check_cors([('origin', 'http://example.com'),\n  498                       ('Access-control-request-method', 'OPTIONS')], False)\n  499  \n  500    def test_handle_cors_preflight_request_headers(self):\n  501:     \"\"\"Test a CORS preflight request.\"\"\"\n  502      self.check_cors([('origin', 'http://example.com'),\n  503                       ('Access-control-request-method', 'GET'),\n\n/home/creepingdeath/django/sitepackages/google_appengine/google/appengine/tools/devappserver2/endpoints/util.py:\n   67      content: A string containing the body content to write.\n   68      start_response: A function with semantics defined in PEP-333.\n   69:     cors_handler: A handler to process CORS request headers and update the\n   70:       headers in the response.  Or this can be None, to bypass CORS checks.\n   71  \n   72    Returns:\n\n43 matches across 3 files\n",
+			"settings":
+			{
+				"buffer_size": 6262,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "sitepackages/google_appengine/google/appengine/tools/devappserver2/endpoints/endpoints_server_test.py",
+			"settings":
+			{
+				"buffer_size": 44807,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "blog/templates/blog/post_add.html",
+			"settings":
+			{
+				"buffer_size": 1247,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "blog/templates/blog/post_edit.html",
+			"settings":
+			{
+				"buffer_size": 1239,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "blog/templates/blog/include/post_form_fields.html",
+			"settings":
+			{
+				"buffer_size": 1173,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "potato_assignment/templates/includes/form_error.html",
+			"settings":
+			{
+				"buffer_size": 218,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "blog/validators.py",
+			"settings":
+			{
+				"buffer_size": 1919,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app.yaml",
+			"settings":
+			{
+				"buffer_size": 704,
 				"line_ending": "Unix"
 			}
 		}
@@ -79,19 +185,15 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 369.0,
+		"height": 311.0,
 		"selected_items":
 		[
 			[
 				"Package Control: ",
-				"Package Control: Remove Package"
-			],
-			[
-				"Package Control: ins",
 				"Package Control: Install Package"
 			]
 		],
-		"width": 467.0
+		"width": 424.0
 	},
 	"console":
 	{
@@ -111,88 +213,188 @@
 	},
 	"expanded_folders":
 	[
-		"/home/creepingdeath/projects/django/potato-assignment",
-		"/home/creepingdeath/projects/django/potato-assignment/blog",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/management",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/static",
-		"/home/creepingdeath/projects/django/potato-assignment/sitepackages/whoosh"
+		"/home/creepingdeath/django",
+		"/home/creepingdeath/django/blog",
+		"/home/creepingdeath/django/blog/static/blog",
+		"/home/creepingdeath/django/blog/static/blog/css",
+		"/home/creepingdeath/django/blog/static/blog/js",
+		"/home/creepingdeath/django/blog/templates/blog",
+		"/home/creepingdeath/django/potato_assignment/static/css",
+		"/home/creepingdeath/django/potato_assignment/static/fonts",
+		"/home/creepingdeath/django/potato_assignment/static/js",
+		"/home/creepingdeath/django/sitepackages",
+		"/home/creepingdeath/django/sitepackages/django/views/generic",
+		"/home/creepingdeath/django/static/css"
 	],
 	"file_history":
 	[
-		"/home/creepingdeath/projects/django/potato-assignment/sitepackages/whoosh/analysis/tokenizers.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/management/commands/__init__.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/management/__init__.py",
-		"/home/creepingdeath/projects/django/potato-assignment/contacts/sitemap.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/templates/blog/homepage.html",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/templates/blog/posts.html",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/views.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/templates/blog/include/post_meta.html",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/urls.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/templates/blog/post_confirm_delete.html",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/sitemap.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/static/blog/js/blog.js",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/models.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/templates/blog/include/post_in_listing.html",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/templates/blog/post.html",
-		"/home/creepingdeath/projects/django/potato-assignment/potato_assignment/settings.py",
-		"/home/creepingdeath/projects/django/potato-assignment/potato_assignment/urls.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/templates/blog/post_edit.html",
-		"/home/creepingdeath/projects/django/potato-assignment/potato_assignment/templates/base.html",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/static/blog/css/blog.css",
-		"/home/creepingdeath/projects/django/potato-assignment/sitepackages/django/views/generic/edit.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/templates/blog/tag.html",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/templates/blog/post_add.html",
-		"/home/creepingdeath/projects/django/potato-assignment/sitepackages/google_appengine/lib/django-1.5/django/views/generic/edit.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/forms.py",
-		"/home/creepingdeath/projects/django/potato-assignment/potato_assignment/templates/includes/form_error.html",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/admin.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/templates/blog/include/post_form_fields.html",
-		"/home/creepingdeath/projects/django/potato-assignment/sitepackages/django/forms/models.py",
-		"/home/creepingdeath/projects/django/potato-assignment/sitepackages/django/forms/widgets.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/test.py",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/templatetags/addclasstofield.py",
-		"/home/creepingdeath/projects/django/potato-assignment/contacts/forms.py",
-		"/home/creepingdeath/projects/django/potato-assignment/contacts/tests.py",
-		"/home/creepingdeath/projects/django/potato-assignment/contacts/urls.py",
-		"/home/creepingdeath/projects/django/potato-assignment/potato_assignment/boot.py",
-		"/home/creepingdeath/projects/django/potato-assignment/contacts/templates/contacts/contacts.html",
-		"/home/creepingdeath/projects/django/potato-assignment/blog/templates/blog/tags.html",
-		"/home/creepingdeath/projects/django/potato-assignment/potato_assignment/static/css/custom.css",
-		"/home/creepingdeath/projects/django/potato-assignment/static/js/select2.js",
-		"/home/creepingdeath/projects/django/potato-assignment/static/css/select2.css",
-		"/home/creepingdeath/.config/sublime-text-3/Packages/User/SublimeLinter.sublime-settings",
-		"/home/creepingdeath/.config/sublime-text-3/Packages/SublimeLinter/SublimeLinter.sublime-settings",
-		"/home/creepingdeath/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
-		"/home/creepingdeath/.config/sublime-text-3/Packages/Pylinter/Pylinter.sublime-settings",
-		"/home/creepingdeath/projects/django/potato_assignment/urls.py",
-		"/home/creepingdeath/projects/django/blog/test.py",
-		"/home/creepingdeath/projects/django/blog/urls.py",
-		"/home/creepingdeath/projects/django/potato_assignment/settings.py",
-		"/home/creepingdeath/projects/django/requirements.txt",
-		"/home/creepingdeath/projects/django/potato_assignment/templates/base.html",
-		"/home/creepingdeath/projects/django/blog/autocomplete_light_registry.py",
-		"/home/creepingdeath/projects/django/blog/templates/blog/post.html",
-		"/home/creepingdeath/projects/django/blog/templates/blog/homepage.html",
-		"/home/creepingdeath/projects/django/blog/views.py",
-		"/home/creepingdeath/projects/django/blog/models.py",
+		"/home/creepingdeath/django/blog/static/blog/js/blog.js",
+		"/home/creepingdeath/django/sitepackages/csp/utils.py",
+		"/home/creepingdeath/django/potato_assignment/static/js/social.js",
+		"/home/creepingdeath/django/requirements.txt",
+		"/home/creepingdeath/django/blog/static/blog/css/social.css",
+		"/home/creepingdeath/django/blog/search.py",
+		"/home/creepingdeath/django/blog/models.py",
+		"/home/creepingdeath/django/blog/views.py",
+		"/home/creepingdeath/django/sitepackages/whoosh/filedb/gae.py",
+		"/home/creepingdeath/django/search/views.py",
+		"/home/creepingdeath/django/search/models.py",
+		"/home/creepingdeath/django/blog/urls.py",
+		"/home/creepingdeath/django/json_view/views.py",
+		"/home/creepingdeath/django/json_view/__init__.py",
+		"/home/creepingdeath/django/search/__init__.py",
+		"/home/creepingdeath/django/sitepackages/django/db/models/fields/related.py",
+		"/home/creepingdeath/django/blog/templates/blog/post_add.html",
+		"/home/creepingdeath/django/potato_assignment/static/css/custom.css",
+		"/home/creepingdeath/django/potato_assignment/templates/base.html",
+		"/home/creepingdeath/django/blog/templates/blog/posts.html",
+		"/home/creepingdeath/django/blog/templates/blog/post.html",
+		"/home/creepingdeath/django/blog/templates/blog/include/post_in_listing.html",
+		"/home/creepingdeath/django/blog/templates/blog/post_edit.html",
+		"/home/creepingdeath/django/blog/templates/blog/homepage.html",
+		"/home/creepingdeath/django/potato_assignment/settings.py",
+		"/home/creepingdeath/django/blog/admin.py",
+		"/home/creepingdeath/django/blog/validators.py",
+		"/home/creepingdeath/django/static/css/custom.css",
+		"/home/creepingdeath/django/djangaeidx.yaml",
+		"/home/creepingdeath/django/sitepackages/djangae/management/commands/runserver.py",
+		"/home/creepingdeath/django/potato_assignment/static/css/bootstrap-theme.css",
+		"/home/creepingdeath/django/blog/templates/blog/post_confirm_delete.html",
+		"/home/creepingdeath/django/blog/forms.py",
+		"/home/creepingdeath/django/blog/templates/blog/include/post_form_fields.html",
+		"/home/creepingdeath/django/blog/static/blog/css/blog.css",
+		"/home/creepingdeath/django/blog/templates/blog/tags.html",
+		"/home/creepingdeath/django/blog/templates/blog/tag.html",
+		"/home/creepingdeath/django/potato_assignment/urls.py",
+		"/home/creepingdeath/django/potato_assignment/templates/includes/modal.html",
+		"/home/creepingdeath/django/potato_assignment/static/css/select2-bootstrap.css",
+		"/home/creepingdeath/django/sitepackages/django/forms/formsets.py",
+		"/home/creepingdeath/django/potato_assignment/static/js/select2.js",
+		"/home/creepingdeath/django/potato_assignment/static/css/select2.css",
+		"/home/creepingdeath/django/sitepackages/django/forms/widgets.py",
+		"/home/creepingdeath/django/sitepackages/django/forms/extras/widgets.py",
+		"/home/creepingdeath/django/blog/test.py",
+		"/home/creepingdeath/django/blog/__init__.py",
+		"/home/creepingdeath/django/blog/static/js/blog.js",
+		"/home/creepingdeath/django/potato_assignment/templates/post.html",
+		"/home/creepingdeath/django/static/jquery-autosuggest/js/jquery.autoSuggest.minified.js",
+		"/home/creepingdeath/django/blog/static/aaa",
+		"/home/creepingdeath/django/potato_assignment/static/css/bootstrap.css",
+		"/home/creepingdeath/django/potato_assignment/wsgi.py",
+		"/home/creepingdeath/django/blog/static/css/blog.css",
+		"/home/creepingdeath/django/potato_assignment/settings_live.py",
+		"/home/creepingdeath/django/potato_assignment/static/css/ie.css",
+		"/home/creepingdeath/.config/sublime-text-3/Packages/User/HTML.sublime-settings",
 		"/home/creepingdeath/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
-		"/home/creepingdeath/.config/sublime-text-3/Packages/User/HTML.sublime-settings"
+		"/home/creepingdeath/.config/sublime-text-3/Packages/User/Python.sublime-settings",
+		"/home/creepingdeath/django/blog/static/jquery-autosuggest/js/jquery.autoSuggest.minified.js",
+		"/home/creepingdeath/django/sitepackages/autocomplete_light/widgets.py",
+		"/home/creepingdeath/potato_assignment/wsgi.pyc",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/interfaces/segnalazione.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/segnalazione.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/contents/segnalazione.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/user.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/user.html",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/static/unibo.cultura.js",
+		"/home/creepingdeath/plone/projects/magazine/src/unibotheme.magazine/src/unibotheme/magazine/static/manifest.cfg",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.solrutils/unibo/solrutils/people.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/homepage.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibotheme.magazine/src/unibotheme/magazine/static/rules.xml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/interfaces/sottoevento.py",
+		"/home/creepingdeath/plone/projects/magazine/parts/omelette/unibo/magazine/browser/formatter.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/configure.zcml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/config.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/utils.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/segnalazioni.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/loghiunibocultura.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/homepage.html",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.magazine/src/unibo/magazine/contents/base.py",
+		"/home/creepingdeath/plone/projects/magazine/parts/omelette/IPython/core/formatters.py",
+		"/home/creepingdeath/plone/projects/magazine/parts/omelette/ZODB/FileStorage/format.py",
+		"/home/creepingdeath/plone/projects/magazine/parts/omelette/Products/CMFFormController/FormAction.py",
+		"/home/creepingdeath/plone/projects/magazine/parts/omelette/plone/autoform/form.py",
+		"/home/creepingdeath/plone/projects/magazine/parts/omelette/Products/GenericSetup/tests/faux_objects.py",
+		"/home/creepingdeath/plone/projects/magazine/parts/omelette/Products/CMFDefault/skins/zpt_generic/getBatchItemInfos.py",
+		"/home/creepingdeath/plone/projects/magazine/parts/omelette/Products/CMFDefault/skins/zpt_content/newsitem_edit_form.py",
+		"/home/creepingdeath/plone/projects/magazine/parts/omelette/zope/formlib/itemswidgets.py",
+		"/home/creepingdeath/plone/projects/magazine/parts/omelette/ZPublisher/Iterators.py",
+		"/home/creepingdeath/plone/projects/magazine/parts/omelette/PIL/ImageTk.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.isa/docs/INSTALL.txt",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/configure.zcml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.magazine/setup.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/viewlets/pathbar.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/strutturaunibocultura.html",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/segnalazione_unibocultura.html",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.magazine/src/unibo/magazine/browser/static/unibo.magazine.js",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.magazine/CHANGES.txt",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/segnalazioni_unibocultura.html",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/logounibocultura.html",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/segnalazione.html",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/struttureunibocultura.py",
+		"/home/creepingdeath/plone/projects/magazine/parts/omelette/plone/dexterity/browser/edit.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/viewlets/document_byline.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/schema/scadenzaunibocultura.xml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/interfaces/__init__.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/locandineunibocultura.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/interfaces/marker.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/segnalazioni_unibocultura.xml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/profiles/default/rolemap.xml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/profiles/default/types.xml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/profiles/default/contentrules.xml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/interfaces/homepage.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/setuphandlers.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/profiles/default/types/homepagesegnalazioni.xml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/test.xml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/loghi.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/locandine.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/browser/templates/locandine.html",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/profiles/default/types/logo.xml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/schema/file.xml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/schema/logo.xml",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.isa/unibo/isa/browser/visitingfellowview.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/contents/homepage.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/contents/__init__.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/contents/sottoevento.py",
+		"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura/src/unibo/cultura/contents/__init__.pyc"
 	],
 	"find":
 	{
-		"height": 38.0
+		"height": 37.0
 	},
 	"find_in_files":
 	{
-		"height": 93.0,
+		"height": 90.0,
 		"where_history":
 		[
-			"/home/creepingdeath/projects/django/",
-			"/home/creepingdeath/projects/django/blog,/home/creepingdeath/projects/django/",
-			"/home/creepingdeath/projects/django/blog,/home/creepingdeath/projects/django/potato_assignment",
-			"/home/creepingdeath/projects/django/",
-			"/home/creepingdeath/projects/django/blog",
-			""
+			"/home/creepingdeath/django",
+			"/home/creepingdeath/plone/projects/magazine/src/",
+			"/home/creepingdeath/plone/projects/magazine/src/unibo.cultura",
+			"/home/creepingdeath/plone/projects/magazine/src/",
+			"/home/creepingdeath/plone/projects/magazine/parts/omelette/",
+			"/home/creepingdeath/plone/projects/portale/src/",
+			"/home/creepingdeath/plone/projects/banca_immagini/src/",
+			"/home/creepingdeath/plone/projects/banca_immagini/parts/omelette",
+			"A:\\,C:\\cygwin\\home\\matteo.parrucci3\\android",
+			"O:\\django\\ombrelloni\\static\\css",
+			"O:\\django\\",
+			"O:\\django\\bagni",
+			"O:\\django\\ ",
+			"O:\\,-*.json",
+			"O:\\",
+			"C:\\cygwin\\home\\matteo.parrucci3\\django\\4hm-salty-vagrant\\salt",
+			"O:\\django\\",
+			"O:\\",
+			"C:\\Users\\matteo.parrucci3\\4hm-salty-vagrant",
+			"O:\\django",
+			"O:/django/",
+			"C:\\Users\\matteo.parrucci3\\new_server\\",
+			"C:\\Users\\matteo.parrucci3\\new_server\\roots\\salt\\lemp\\",
+			"C:\\Users\\matteo.parrucci3\\new_server\\roots\\salt\\lemp",
+			"C:\\Users\\matteo.parrucci3\\new_server\\roots\\salt\\",
+			"C:\\Users\\matteo.parrucci3\\new_server\\*",
+			"C:\\Users\\matteo.parrucci3\\new_server\\",
+			"C:\\Users\\matteo.parrucci3\\new_server",
+			"C:\\Users\\matteo.parrucci3\\4hm-salty-vagrant"
 		]
 	},
 	"find_state":
@@ -200,134 +402,134 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"tag",
-			"writer",
-			"time",
-			"\n    ",
-			"()\n",
-			"pdb",
-			"index_fe",
-			"delete",
-			"sender",
-			"kwargs",
-			"inde",
-			"\\w+(\\.?\\w+)*",
-			"\\\\w+(\\\\.?\\\\w+)*",
-			"idlist",
-			"PostsSitemap",
-			"TagsSitemap",
-			"jango.template.loaders.app_directories.Loader",
-			"Y-m-d",
-			"filter",
-			"get_queryset",
-			"baselist",
-			"queryset",
-			"get_queryset",
-			"posts",
-			"pdb",
-			"delete",
-			"reverse",
-			"delete",
-			");\n",
-			"JSONPostDelete",
-			"delete",
-			"creat",
-			"form[field_name].value()",
-			")\n",
-			"form.",
-			"form_valid",
-			"def form_valid",
-			"json",
-			"get_context_data",
-			"get_success_url",
-			"Either provide a url or define",
-			"Either provide a url or ",
-			"Either provide a url or define a get_absolute_url method on the Model",
-			"import revers",
-			"reve",
-			"comment-add",
-			"commment-add",
-			"post-add",
+			"MultipleObjectTemplateResponseMixin",
+			"paginate_queryset",
+			"MultipleObjectMixin",
+			"baseli",
+			"listv",
+			"objects",
+			"quer",
+			"white",
+			"head",
+			"allow",
+			"CORS",
+			"cors",
+			"CORDS",
+			"COORDS",
+			"Allow.*Origin",
+			"Allow-Origin",
+			"Access-Control-Allow-Origin",
+			"CSP_DEFAULT_SRC",
+			"eval",
+			"inline",
+			"default-src",
+			"modal",
+			"plus",
+			"awes",
+			"font",
+			"sites",
+			"templ",
+			"request",
+			"format(message_args",
+			"constraint",
+			"validat",
+			"#",
+			"schema",
+			"datastorestorage",
+			"DatastoreStorage",
+			"DatastoreStorage()",
+			"ix =",
+			"search",
+			"selected_facet",
+			"title",
+			"group",
+			"querysets",
+			"facet",
+			"set_active_facets_first",
 			"add",
-			"{{",
-			"datetime",
-			"ModelFormMixin",
-			"createv",
+			"_add",
+			"add",
+			"m2m_changed",
+			"fire",
+			"signal",
+			"index",
+			"schema",
+			"datas",
+			"taskqueue",
+			"queue.yaml",
+			"Push queues",
+			"defe",
+			"que",
+			"image",
+			"contains",
+			"contain",
+			"conta",
+			"col",
+			"add",
+			"cps",
+			"add-new",
+			"add-post",
+			"90%",
+			"height",
+			"DeleteView",
 			"create",
-			"reverse",
-			"revers",
-			"succ",
-			"CommentForm",
-			"empty ",
-			"queryset",
-			"Comment",
-			" ",
-			"CommentForm",
-			"forein",
-			"render(",
-			"render",
-			"render(",
-			"choices",
-			"SelectMultiple",
-			"choice",
-			"class modelm",
-			"queryset",
-			"SelectMultiple",
-			"render(",
-			"hidden_widget",
+			"get_object",
+			"delete(",
+			"post",
+			"data(",
+			"form",
+			"delete",
+			"displ",
+			"modal",
+			"permission_required",
+			"method_decorator",
+			"permission_required",
+			"postedit",
+			"postadd",
+			"to_python",
+			"ModelMultipleSelect2Field",
+			"is_valid",
+			"def clean",
+			"def full_clean",
+			"CSP_DEFAULT_SRC",
+			"default-src",
+			"unsafe-inline",
+			"x",
+			"def cleaned_data",
+			"cleaned_data",
+			"BaseModelForm",
+			"modelfo",
+			"modelform",
+			"HttpResponse",
+			"DjangoJSONEncoder",
+			"json",
+			"JsonResponse",
 			"hidden",
-			"ModelChoiceField",
-			"queryset",
-			"choicefield",
-			"MultipleChoiceField",
-			"TypedMultipleChoiceField",
-			"choice",
-			"ModelChoiceField",
+			"HiddenWidget",
+			"pdb",
+			"chain",
 			"class select",
-			"Select",
-			"multiple",
-			"model",
-			"choicef",
-			"ModelChoiceField",
-			"select",
-			"value_from_datadict",
+			"False",
 			"choices",
-			"format_html",
-			"import format_h",
-			"def format_h",
-			"format_h",
-			"pdb",
 			"SelectMultiple",
-			"pdb",
-			"ListWidget",
-			"relation",
-			"GenericRelationFormfield",
-			"value",
-			"rela",
-			"widge",
-			"relatedfield",
-			"RelatedField",
-			"relatedset",
-			"widg",
-			"multi",
-			"hiddeninput",
-			"hiddenin",
-			"top",
-			".cke_skin_BootstrapCK-Skin ",
-			"info",
-			"field",
-			"meta",
-			"label",
-			"post-meta",
-			".meta",
-			"meta",
-			"save",
-			"edit",
-			"exce",
-			"_\\((.*?)\\)",
-			"lint",
-			"TaggableManager",
-			"static_url"
+			"post-bg",
+			"paginate_by",
+			"get",
+			"header",
+			"hr",
+			"live",
+			"potato-assignment",
+			"style",
+			"home-bg",
+			"home",
+			"blog",
+			"comp",
+			"map",
+			"debug",
+			"TEMPlate",
+			"temp",
+			"tab",
+			"templ"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -335,9 +537,22 @@
 		"regex": false,
 		"replace_history":
 		[
-			"",
-			"$1",
-			"self.posts"
+			"format(**message_args",
+			"</tal:block>:</dt>",
+			"<dt><tal:block i18n:translate=\"\">",
+			":</dt>",
+			"ILinkUtility",
+			"start_year",
+			"start_month",
+			"\\n",
+			"url('../fonts/",
+			"bagnialmare",
+			"bagnialmare.com",
+			"    ",
+			"\\n            - $1",
+			"__grains__",
+			"__pillar__",
+			"    "
 		],
 		"reverse": false,
 		"show_context": true,
@@ -348,35 +563,35 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
+					"file": "blog/views.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 21,
+						"buffer_size": 8770,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								21,
-								21
+								1915,
+								1915
 							]
 						],
 						"settings":
 						{
-							"auto_name": "713957764029942404031",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/Python/Python.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 290.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -385,25 +600,23 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3429,
+						"buffer_size": 3506,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2668,
-								2668
+								2454,
+								2454
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Python/Python.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1320.0,
+						"translation.y": 1209.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
@@ -411,57 +624,136 @@
 				},
 				{
 					"buffer": 2,
-					"file": "blog/models.py",
+					"file": "sitepackages/django/views/generic/list.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4307,
+						"buffer_size": 7014,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4010,
-								4010
+								4825,
+								4825
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Python/Python.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 2354.0,
+						"translation.y": 1257.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "blog/management/commands/manage_index.py",
+					"file": "blog/models.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1390,
+						"buffer_size": 4293,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								972,
-								972
+								2730,
+								2730
 							]
 						],
 						"settings":
 						{
-							"open_with_edit": true,
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 866.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "blog/templates/blog/post.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3137,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								450,
+								450
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "potato_assignment/templates/base.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5617,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5305,
+								5305
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1849.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "blog/static/blog/js/blog.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4992,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								69,
+								69
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -471,63 +763,502 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "blog/urls.py",
+					"buffer": 7,
+					"file": "potato_assignment/settings.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1304,
+						"buffer_size": 4388,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								616,
-								616
+								4278,
+								4278
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 960.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "potato_assignment/urls.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 966,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								558,
+								558
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "blog/views.py",
+					"buffer": 9,
+					"file": "potato_assignment/wsgi.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7335,
+						"buffer_size": 650,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7173,
-								7173
+								591,
+								591
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Python/Python.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 4312.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6262,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										169,
+										173
+									],
+									[
+										207,
+										211
+									],
+									[
+										276,
+										280
+									],
+									[
+										347,
+										351
+									],
+									[
+										412,
+										416
+									],
+									[
+										479,
+										483
+									],
+									[
+										546,
+										550
+									],
+									[
+										810,
+										814
+									],
+									[
+										945,
+										949
+									],
+									[
+										1129,
+										1133
+									],
+									[
+										1164,
+										1168
+									],
+									[
+										1216,
+										1220
+									],
+									[
+										1274,
+										1278
+									],
+									[
+										1351,
+										1355
+									],
+									[
+										1455,
+										1459
+									],
+									[
+										1541,
+										1545
+									],
+									[
+										1701,
+										1705
+									],
+									[
+										1849,
+										1853
+									],
+									[
+										1987,
+										1991
+									],
+									[
+										2082,
+										2086
+									],
+									[
+										2144,
+										2148
+									],
+									[
+										2207,
+										2211
+									],
+									[
+										2309,
+										2313
+									],
+									[
+										2702,
+										2706
+									],
+									[
+										3026,
+										3030
+									],
+									[
+										3253,
+										3257
+									],
+									[
+										3530,
+										3534
+									],
+									[
+										3639,
+										3643
+									],
+									[
+										3753,
+										3757
+									],
+									[
+										3867,
+										3871
+									],
+									[
+										3955,
+										3959
+									],
+									[
+										4084,
+										4088
+									],
+									[
+										4227,
+										4231
+									],
+									[
+										4367,
+										4371
+									],
+									[
+										4500,
+										4504
+									],
+									[
+										4613,
+										4617
+									],
+									[
+										4727,
+										4731
+									],
+									[
+										4893,
+										4897
+									],
+									[
+										5078,
+										5082
+									],
+									[
+										5334,
+										5338
+									],
+									[
+										5631,
+										5635
+									],
+									[
+										6090,
+										6094
+									],
+									[
+										6196,
+										6200
+									],
+									[
+										6262,
+										6262
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								3028,
+								3028
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 5,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 480.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "sitepackages/google_appengine/google/appengine/tools/devappserver2/endpoints/endpoints_server_test.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 44807,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								12558,
+								12558
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 5113.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "blog/templates/blog/post_add.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1247,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								964,
+								964
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "blog/templates/blog/post_edit.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1239,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								376,
+								376
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "blog/templates/blog/include/post_form_fields.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1173,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								594,
+								594
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "potato_assignment/templates/includes/form_error.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 218,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								218,
+								218
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "blog/validators.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1919,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								726,
+								726
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "app.yaml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 704,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								92,
+								92
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
 					"type": "text"
 				}
 			]
@@ -535,11 +1266,11 @@
 	],
 	"incremental_find":
 	{
-		"height": 30.0
+		"height": 25.0
 	},
 	"input":
 	{
-		"height": 33.0
+		"height": 31.0
 	},
 	"layout":
 	{
@@ -566,16 +1297,20 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 142.0
+		"height": 100.0
 	},
 	"output.find_results":
 	{
 		"height": 0.0
 	},
+	"output.vagrant":
+	{
+		"height": 100.0
+	},
 	"project": "potato_assignment.sublime-project",
 	"replace":
 	{
-		"height": 56.0
+		"height": 66.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -583,16 +1318,32 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"formatt",
+				"omelette/unibo/magazine/browser/formatter.py"
+			],
+			[
+				"download",
+				"unibo.contents/src/unibo/contents/downloadarea.py"
+			],
+			[
+				"downlo",
+				"unibo.contents/src/unibo/contents/downloadarea.py"
+			]
 		],
 		"width": 0.0
 	},
 	"select_project":
 	{
-		"height": 0.0,
+		"height": 500.0,
 		"selected_items":
 		[
+			[
+				"",
+				"/C/Users/matteo.parrucci3/portale.sublime-project"
+			]
 		],
-		"width": 0.0
+		"width": 380.0
 	},
 	"select_symbol":
 	{
@@ -610,7 +1361,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 258.0,
+	"side_bar_width": 320.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

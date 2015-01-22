@@ -95,13 +95,10 @@ def search(q, filters, query_string, max_facets=5):
     facets = [sorting.FieldFacet("tags", allow_overlap=True,
                                  maptype=sorting.Count)]
     parser = qparser.QueryParser("text", schema=ix.schema)  # , group=og)
-    parser.add_plugin(qparser.FuzzyTermPlugin())
-    # Adds fuzzy search of distance 1 and prefix 0 to all search terms
-    if q not in ("", "*"):
-        q = "".join([item + "~" for item in q.split()])
     try:
-        q = parser.parse(q)
+        q = parser.parse("*"+q+"*")
     except:
+        import pdb; pdb.set_trace()
         q = None
     if q or filters:
         searcher = ix.searcher()
@@ -110,4 +107,4 @@ def search(q, filters, query_string, max_facets=5):
             q = q & query.Term(filter_name, filter_value)
         hits = searcher.search(q.normalize(), groupedby=facets)
         active_facets = []
-        return hits, facets, active_facets
+        return {"hits": hits, "facets": facets, "active_facets": active_facets}
