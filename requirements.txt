@@ -5,6 +5,7 @@ django-csp
 django-cors-headers
 django-session-csrf
 django-ckeditor
+django-url-tools
 cssmin
 jsmin
 django_compressor

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+import operator
 
 from django.db.models import signals
 
@@ -8,6 +9,7 @@ from whoosh.filedb.gae import DatastoreStorage
 from whoosh.writing import AsyncWriter
 
 from .models import Post
+from .models import Tag
 
 schema = {"pk": fields.ID(stored=True, unique=True),
           "text": fields.TEXT(),
@@ -91,20 +93,45 @@ def search(q, filters, query_string, max_facets=5):
     """
     ix = get_or_create_index()
     hits = []
-
     facets = [sorting.FieldFacet("tags", allow_overlap=True,
                                  maptype=sorting.Count)]
+    tags = Tag.objects.values('slug', 'title',)
     parser = qparser.QueryParser("text", schema=ix.schema)  # , group=og)
     try:
-        q = parser.parse("*"+q+"*")
+        q = parser.parse("*" + q + "*")
     except:
-        import pdb; pdb.set_trace()
         q = None
     if q or filters:
         searcher = ix.searcher()
-        for filter in filters:
-            filter_name, filter_value = filter.split(":", 1)
+        for filter_value in filters:
+            filter_name = "tags"
             q = q & query.Term(filter_name, filter_value)
         hits = searcher.search(q.normalize(), groupedby=facets)
         active_facets = []
+        sorted_facets = sorted(hits.groups("tags").items(),
+                               key=operator.itemgetter(1, 0),
+                               reverse=True)
+        facets = []
+        for facet_slug, facet_value in sorted_facets:
+            if not facet_slug:
+                continue
+            qs = query_string.copy()
+            qs["page"] = "1"
+            if facet_slug in filters:
+                qs.setlist('f', [f for f in filters if f != facet_slug])
+                state = "active"
+            else:
+                qs.appendlist('f', facet_slug)
+                state = "available"
+            obj = tags.get(slug=facet_slug)
+            facet_dict = {'slug': facet_slug,
+                          'title': obj.get("title", ""),
+                          'count': facet_value,
+                          'qs': qs.urlencode(),
+                          }
+
+            if state == 'active':
+                active_facets.append(facet_dict)
+            else:
+                facets.append(facet_dict)
         return {"hits": hits, "facets": facets, "active_facets": active_facets}

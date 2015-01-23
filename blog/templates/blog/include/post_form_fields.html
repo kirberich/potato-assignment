@@ -16,10 +16,12 @@
 </div>
 <div class="form-group">
 	<label for="id_image">Image</label>
+  <span class="help-block">{{ form.image.help_text }}</span>
 	{% for error in form.image.errors %}
     {% include 'includes/form_error.html' %}
   {% endfor %}
   {{ form.image|addclasstofield:"form-control" }}
+
 </div>
 <div class="form-group">
   <label for="id_text">Text</label>

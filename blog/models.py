@@ -88,7 +88,8 @@ class Post(BaseModel):
     image = models.ImageField(upload_to="post_images",
                               validators=[ImageSize(min_w=1900,
                                                     max_w=1900), ],
-                              help_text="Image must be 1900px X 100-200px")
+                              help_text="Must be 1900px X 100-200px",
+                              blank=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     tags = RelatedSetField(Tag, related_name="posts", blank=True)

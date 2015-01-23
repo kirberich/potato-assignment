@@ -50,13 +50,13 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'djangosecure',
     'csp',
-    'corsheaders',
     'djangae.contrib.gauth',
     'djangae',
     'blog',
     'contacts',
     'compressor',
     'ckeditor',
+    'url_tools',
 )
 
 CKEDITOR_UPLOAD_PATH = "ck-uploads/"
@@ -64,7 +64,6 @@ CKEDITOR_CONFIGS = {'default': {'toolbar': 'full', }, }
 MIDDLEWARE_CLASSES = (
     'djangae.contrib.security.middleware.AppEngineSecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'djangae.contrib.gauth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -83,7 +82,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
-    "session_csrf.context_processor"
+    "session_csrf.context_processor",
+    'url_tools.context_processors.current_url',
 )
 
 TEMPLATE_DIRS = (

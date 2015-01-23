@@ -2,13 +2,13 @@
 <nav>
   <ul class="pager">
   {% if page_obj.has_previous %}
-    <li class="previous">
-      <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+    <li class="previous btn">
+      <a href="TODO page=page_obj.previous_page_number" aria-label="Previous">
         <span aria-hidden="true">&larr; Newer</span>
       </a>
     </li>
   {% else %}
-    <li class="previous disabled">
+    <li class="previous disabled  btn">
       <a href="#" aria-label="Previous">
         <span aria-hidden="true">&larr; Newer</span>
       </a>
@@ -16,13 +16,13 @@
   {% endif %}
   <li> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
   {% if page_obj.has_next %}
-    <li class="next">
-      <a href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+    <li class="next  btn">
+      <a href="TODO page=page_obj.next_page_number" aria-label="Next">
         <span aria-hidden="true">Older &rarr;</span>
       </a>
     </li>
   {% else %}
-    <li class="next disabled">
+    <li class="next disabled btn">
       <a href="#" aria-label="Next">
         <span aria-hidden="true">Older &rarr;</span>
       </a>

@@ -4,7 +4,6 @@ import json
 from django.core.urlresolvers import reverse
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from django.views.generic.list import MultipleObjectMixin
 from django.views.generic.list import BaseListView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import CreateView
@@ -13,6 +12,7 @@ from django.views.generic.edit import DeleteView
 from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import requires_csrf_token
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
@@ -34,7 +34,8 @@ class HomepageView(ListView):
     """
     context_object_name = "posts"
     template_name = "blog/homepage.html"
-    queryset = Post.objects.all()[:3]
+    model = Post
+    paginate_by = 5
 
 
 class PostsView(ListView):
@@ -45,14 +46,15 @@ class PostsView(ListView):
     """
     context_object_name = "posts"
     template_name = "blog/posts.html"
-    paginate_by = 2
+    paginate_by = 5
     search_results = {}
 
     def get_queryset(self):
         query = self.request.GET.get('q', "").strip()
         filters = self.request.GET.getlist('f', [])
-        self.search_results = search(q=query, filters=filters,
-                                     query_string=self.request.GET,)
+        self.search_results["q"] = query
+        self.search_results.update(search(q=query, filters=filters,
+                                   query_string=self.request.GET,))
         hits = self.search_results.pop("hits")
         return Post.objects.filter(pk__in=[h['pk'] for h in hits])
 
@@ -60,6 +62,10 @@ class PostsView(ListView):
         context = super(PostsView, self).get_context_data(**kwargs)
         context.update(self.search_results)
         return context
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super(PostsView, self).dispatch(*args, **kwargs)
 
 
 class PostView(DetailView):

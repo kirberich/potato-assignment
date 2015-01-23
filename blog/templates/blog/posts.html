@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
-{%block pagetitle %}{{ block.super }} posts{% endblock %}
+{%block pagetitle %}{{ block.super }} Search {{ q }}{% endblock %}
+
+ {% load urls %}
 
 {% block breadcrumbs %}
 <ol class="breadcrumb">
@@ -16,7 +18,7 @@
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           <div class="site-heading">
-            <h1>All my posts</h1>
+            <h1>My posts</h1>
             <hr class="small">
             <span class="subheading">Hope you find them useful</span>
           </div>
@@ -27,15 +29,44 @@
 {% endblock header %}
 
 {% block content %}
-  <div class="container">
+<div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form method="get" id="search-form" role="search" action="{% url 'posts-search' %}">
+          <div class="form-group">
+            <input name="q" type="text" class="form-control" id="search-input" placeholder="Search" value="{{ q }}"/>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="container" id="results-container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div id="facets">
+          {% for facet in active_facets %}
+            <a href="TODO f=facet.slug" class="btn btn-default facet">
+              <span class="glyphicon glyphicon-check">
+                {{ facet.title }}&nbsp;
+              </span>
+              <span class="badge">{{ facet.count }}</span>
+            </a>
+          {% endfor %}
+          {% for facet in facets %}
+            <a href="{% overload_params request.get_full_path f={{ facet.slug }}%}" class="btn btn-default facet">
+              <span class="glyphicon glyphicon-unchecked">
+                {{ facet.title }}&nbsp;
+              </span>
+              <span class="badge">{{ facet.count }}</span>
+            </a>
+          {% endfor %}
+        </div>
         {% for post in posts %}
 	        <div class="actions pull-right">
 	        	{% if forloop.first %}
     	        {% if perms.blog.can_add_post %}
 				        <div class="clearfix">
-				          <a class="pull-right btn btn-default" href="{% url 'add-post' %}">
+				          <a class="pull-right btn btn-success" href="{% url 'add-post' %}">
 				          	<span class="glyphicon glyphicon-plus">New post</span>
 				          </a>
 				        </div>
@@ -43,14 +74,14 @@
 				      {% endif %}
 	          {% if perms.blog.can_edit_post %}
 	          	<div class="clearfix">
-		            <a class="pull-right btn btn-default" href="{{ post.get_edit_url }}">
+		            <a class="pull-right btn btn-info" href="{{ post.get_edit_url }}">
 		            	<span class="glyphicon glyphicon-pencil">Edit post</span>
 		            </a>
 	            </div>
 	          {% endif %}
 	          {% if perms.blog.can_delete_post %}
 		          <div class="clearfix">
-		            <a class="pull-right btn btn-default delete-link" href="{{ post.get_delete_url }}"
+		            <a class="pull-right btn btn-danger delete-link" href="{{ post.get_delete_url }}"
 		            	 data-toggle="modal" data-target="#modal-{{ post.slug }}">
 		            	 <span class="glyphicon glyphicon-remove">Delete post</span>
 		            </a>
@@ -65,7 +96,11 @@
 	        </div>
         {% include 'blog/include/post_in_listing.html' %}
         {% empty %}
-          <p>Sorry, no post in this blog.</p>
+          {% if q %}
+            <p>Sorry, no posts matching your query were found.</p>
+          {% else %}
+            <p>Sorry, no post in this blog.</p>
+          {% endif %}
         {% endfor %}
         {% include 'blog/include/pagination.html' %}
       </div>

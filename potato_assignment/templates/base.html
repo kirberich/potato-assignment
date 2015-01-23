@@ -76,18 +76,10 @@
     	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
             <li>
-              <form class="navbar-form navbar-right" method="get" id="search-form" role="search" action="{% url 'posts' %}">
-                <div class="form-group">
-                  {% csrf_token %}
-                  <input name="q" type="text" class="form-control" id="search-input" placeholder="Search" />
-                </div>
-              </form>
-            </li>
-            <li>
                 <a href="{% url 'homepage' %}">Home</a>
             </li>
             <li>
-                <a href="{% url 'posts' %}">Blog</a>
+                <a href="{% url 'posts' %}">Search</a>
             </li>
             <li>
                 <a href="{% url 'tags' %}">Tags</a>

@@ -1,6 +1,36 @@
+function search () {
+    //do something
+    $.ajax({
+        url: $('#search-form').attr("action"),
+        type: 'GET',
+        data: $('#search-form').serializeArray(),
+        success: function(response) {
+            $("#results-container").html($(response).find("#results-container").html());
+            //window.history.pushState(url, "", url)
+        }
+    });
+}
 $(function() {
     $("#id_tags").select2({
         tags: true
+    });
+
+    var typingTimer;
+
+    //on keyup, start the countdown
+    $("body").on("keyup", "#search-input", function(){
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(search, 500);
+    });
+
+    //on keydown, clear the countdown
+    $("body").on("keydown", "#search-input", function(){
+        clearTimeout(typingTimer);
+    });
+
+    $('body').on("submit", "#search-form", function(evt){
+        evt.preventDefault();
+        search();
     });
 
     $('#add_comment_submit').on("click", function(evt) {
@@ -33,41 +63,5 @@ $(function() {
                 }
             }
         });
-    });
-
-    function doneTyping () {
-        //do something
-        $.ajax({
-            url: $('#search-form').attr("action"),
-            type: 'GET',
-            data: $('#search-form').serializeArray(),
-            success: function(response) {
-                $("#content-wrapper").html($(response).find("#content-wrapper").html());
-            }
-        });
-    }
-
-    $("body").on("click", "#close-search", function(){
-        $("#search-wrapper").empty();
-        $("#content-wrapper").show();
-    });
-
-    var typingTimer;
-    var doneTypingInterval = 500;
-
-    //on keyup, start the countdown
-    $("#search-input").keyup(function(){
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(doneTyping, doneTypingInterval);
-    });
-
-    //on keydown, clear the countdown
-    $("#search-input").keydown(function(){
-        clearTimeout(typingTimer);
-    });
-
-    $('#search-form').on("submit", function(evt){
-        evt.preventDefault();
-        doneTyping();
     });
 });
