@@ -1,18 +1,34 @@
 function search () {
-    //do something
+    url = $('#search-form').attr("action")
+    if (url.indexOf("?") >= 0)
+    {
+       url += "&";
+    }
+    else
+    {
+        url += "?";
+    }
+    url += $('#search-form').serialize()
     $.ajax({
-        url: $('#search-form').attr("action"),
+        url: url,
         type: 'GET',
-        data: $('#search-form').serializeArray(),
+        context: url,
         success: function(response) {
             $("#results-container").html($(response).find("#results-container").html());
-            //window.history.pushState(url, "", url)
+            window.history.pushState(url, "", url);
         }
     });
 }
 $(function() {
     $("#id_tags").select2({
         tags: true
+    });
+
+    $("body").on("click", "#facets-openclose", function(evt){
+        evt.preventDefault();
+        $("#available-facets").slideToggle();
+        $(".glyphicon", this).toggleClass("glyphicon-chevron-up");
+        $(".glyphicon", this).toggleClass("glyphicon-chevron-down");
     });
 
     var typingTimer;

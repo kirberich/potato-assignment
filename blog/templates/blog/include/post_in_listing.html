@@ -1,14 +1,14 @@
-    <div class="post-preview">
-      <a href="{{ post.get_absolute_url }}">
-        <h2 class="post-title">
-          {{ post.title }}
-        </h2>
-      </a>
-      <h3 class="post-subtitle">
-        {{ post.subtitle }}
-      </h3>
-      {% include 'blog/include/post_meta.html' %}
-      {% if not forloop.last %}
-        <hr>
-      {% endif %}
-    </div>
+<div class="post-preview">
+  <a href="{{ post.get_absolute_url }}">
+    <h2 class="post-title">
+      {{ post.title }}
+    </h2>
+  </a>
+  <h3 class="post-subtitle">
+    {{ post.subtitle }}
+  </h3>
+  {% include 'blog/include/post_meta.html' %}
+  {% if not forloop.last %}
+    <hr />
+  {% endif %}
+</div>

@@ -30,7 +30,7 @@ logger = logging.getLogger("blog.console")
 
 
 class HomepageView(ListView):
-    """ Homepage view that get the 3 latest created posts
+    """ Homepage view
     """
     context_object_name = "posts"
     template_name = "blog/homepage.html"

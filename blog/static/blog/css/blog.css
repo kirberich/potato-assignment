@@ -420,3 +420,9 @@ img::-moz-selection {
 body {
   webkit-tap-highlight-color: #0085a1;
 }
+#facets-openclose
+{
+    cursor: pointer;
+    position: relative;
+    bottom: 30px;
+}

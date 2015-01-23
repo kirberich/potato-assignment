@@ -40,7 +40,7 @@ COMPRESS_JS_FILTERS = [
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,7 +57,16 @@ INSTALLED_APPS = (
     'compressor',
     'ckeditor',
     'url_tools',
-)
+]
+if DEBUG:
+    INSTALLED_APPS.append('django_nose')
+    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+    # Tell nose to measure coverage on the 'foo' and 'bar' apps
+    NOSE_ARGS = [
+        '--with-coverage',
+        '--cover-package=blog,contacts',
+    ]
 
 CKEDITOR_UPLOAD_PATH = "ck-uploads/"
 CKEDITOR_CONFIGS = {'default': {'toolbar': 'full', }, }
@@ -83,7 +92,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
     "session_csrf.context_processor",
-    'url_tools.context_processors.current_url',
+    "url_tools.context_processors.current_url",
 )
 
 TEMPLATE_DIRS = (
@@ -144,10 +153,11 @@ STATICFILES_FINDERS = (
 
 CSP_DEFAULT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval")
 
-CORS_ORIGIN_WHITELIST = (
-    'google.com',
-    'facebook.com',
-    'twitter.com',
-)
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_FRAME_DENY = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_SSL_REDIRECT = True
 
 from djangae.contrib.gauth.settings import *

@@ -10,7 +10,7 @@ libraries:
 
 handlers:
 
-- url: /_ah/(mapreduce|queue|warmup).*
+- url: /_ah/(mapreduce|queue|warmup|remote_api).*
   script: potato_assignment.wsgi.application
   login: admin
   secure: always

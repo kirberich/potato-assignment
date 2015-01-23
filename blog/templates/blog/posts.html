@@ -29,81 +29,84 @@
 {% endblock header %}
 
 {% block content %}
-<div class="container">
+	<div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <form method="get" id="search-form" role="search" action="{% url 'posts-search' %}">
+        <form method="get" id="search-form" role="search" action="{% del_params request.get_full_path 'q' %}">
           <div class="form-group">
+          	<label for="search-input">Search</label>
             <input name="q" type="text" class="form-control" id="search-input" placeholder="Search" value="{{ q }}"/>
           </div>
         </form>
       </div>
     </div>
-  </div>
-  <div class="container" id="results-container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div id="facets">
-          {% for facet in active_facets %}
-            <a href="TODO f=facet.slug" class="btn btn-default facet">
-              <span class="glyphicon glyphicon-check">
-                {{ facet.title }}&nbsp;
-              </span>
-              <span class="badge">{{ facet.count }}</span>
-            </a>
-          {% endfor %}
-          {% for facet in facets %}
-            <a href="{% overload_params request.get_full_path f={{ facet.slug }}%}" class="btn btn-default facet">
-              <span class="glyphicon glyphicon-unchecked">
-                {{ facet.title }}&nbsp;
-              </span>
-              <span class="badge">{{ facet.count }}</span>
-            </a>
-          {% endfor %}
-        </div>
-        {% for post in posts %}
-	        <div class="actions pull-right">
-	        	{% if forloop.first %}
-    	        {% if perms.blog.can_add_post %}
-				        <div class="clearfix">
-				          <a class="pull-right btn btn-success" href="{% url 'add-post' %}">
-				          	<span class="glyphicon glyphicon-plus">New post</span>
-				          </a>
-				        </div>
-				        {% endif %}
-				      {% endif %}
-	          {% if perms.blog.can_edit_post %}
-	          	<div class="clearfix">
-		            <a class="pull-right btn btn-info" href="{{ post.get_edit_url }}">
-		            	<span class="glyphicon glyphicon-pencil">Edit post</span>
-		            </a>
-	            </div>
-	          {% endif %}
-	          {% if perms.blog.can_delete_post %}
-		          <div class="clearfix">
-		            <a class="pull-right btn btn-danger delete-link" href="{{ post.get_delete_url }}"
-		            	 data-toggle="modal" data-target="#modal-{{ post.slug }}">
-		            	 <span class="glyphicon glyphicon-remove">Delete post</span>
-		            </a>
-	            </div>
-	            <div class="modal fade" id="modal-{{ post.slug }}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModal" aria-hidden="true">
-	            	<div class="modal-dialog">
-	        				<div class="modal-content">
-	        				</div>
-	      				</div>
-	    				</div>
-	        	{% endif %}
-	        </div>
-        {% include 'blog/include/post_in_listing.html' %}
-        {% empty %}
-          {% if q %}
-            <p>Sorry, no posts matching your query were found.</p>
-          {% else %}
-            <p>Sorry, no post in this blog.</p>
-          {% endif %}
-        {% endfor %}
-        {% include 'blog/include/pagination.html' %}
-      </div>
-    </div>
-  </div>
+    <div id="results-container">
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+		      {% for facet in active_facets %}
+		        {% if forloop.first%}
+		        	<h4>Active Filters</h4>
+		        	<div id="active-facets" class="btn-group">
+		        {% endif %}
+		        <a href="{% del_params request.get_full_path f=facet.slug %}" class="btn btn-default facet">
+		          <span class="glyphicon glyphicon-check">
+		            {{ facet.title }}&nbsp;
+		          </span>
+		          <span class="badge">{{ facet.count }}</span>
+		        </a>
+		        {% if forloop.last %}
+		        	</div>
+		        {% endif %}
+		      {% endfor %}
+		    </div>
+		  </div>
+		  <div class="row">
+		  	<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+		      {% for facet in facets %}
+		        {% if forloop.first%}
+		        	<h4>Available Filters</h4>
+		        	<div id="available-facets" class="btn-group">
+		        {% endif %}
+		        <a href="{% overload_params request.get_full_path f=facet.slug %}" class="btn btn-default facet">
+		          <span class="glyphicon glyphicon-unchecked">
+		            {{ facet.title }}&nbsp;
+		          </span>
+		          <span class="badge">{{ facet.count }}</span>
+		        </a>
+		        {% if forloop.last %}
+		        	</div>
+		        {% endif %}
+		      {% endfor %}
+		    </div>
+		  </div>
+		  <hr />
+		  {% for post in posts %}
+		    <div class="row">
+		    	<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+						{% include 'blog/include/post_actions.html' %}
+		  		</div>
+				</div>
+		    <div class="row">
+		    	<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+			      {% include 'blog/include/post_in_listing.html' %}
+			    </div>
+			  </div>
+	  	    {% empty %}
+  		    <div class="row">
+		    		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+			  	    {% if q %}
+			    	    <p>Sorry, no posts matching your query were found.</p>
+			      	{% else %}
+			        	<p>Sorry, no post in this blog.</p>
+			      	{% endif %}
+			       </div>
+			     </div>
+		  {% endfor %}
+		  <div class="row">
+		  	<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+		      {% include 'blog/include/pagination.html' %}
+		    </div>
+		  </div>
+		</div>
+	</div>
 {% endblock content %}

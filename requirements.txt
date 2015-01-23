@@ -11,4 +11,5 @@ jsmin
 django_compressor
 coverage
 nose
+django-nose
 whoosh
