@@ -24,8 +24,8 @@ SECRET_KEY = get_app_config().secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-COMPRESS_ENABLED = False
-TEMPLATE_DEBUG = True
+COMPRESS_ENABLED = not DEBUG
+TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (('Matteo Parrucci', 'parruc@gmail.com'),)
 
@@ -66,6 +66,7 @@ if DEBUG:
     NOSE_ARGS = [
         '--with-coverage',
         '--cover-package=blog,contacts',
+        '--with-gae',
     ]
 
 CKEDITOR_UPLOAD_PATH = "ck-uploads/"
