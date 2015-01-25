@@ -23,9 +23,9 @@ from .boot import get_app_config
 SECRET_KEY = get_app_config().secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-COMPRESS_ENABLED = not DEBUG
-TEMPLATE_DEBUG = DEBUG
+DEBUG = False
+COMPRESS_ENABLED = False
+TEMPLATE_DEBUG = True
 
 ADMINS = (('Matteo Parrucci', 'parruc@gmail.com'),)
 
@@ -37,8 +37,12 @@ COMPRESS_CSS_FILTERS = [
 COMPRESS_JS_FILTERS = [
     'compressor.filters.jsmin.JSMinFilter',
 ]
-
+COMPRESS_OFFLINE = True
 # Application definition
+
+ALLOWED_HOSTS = (
+    "localhost",
+    "potato-assignment.appspot.com")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -58,15 +62,14 @@ INSTALLED_APPS = [
     'ckeditor',
     'url_tools',
 ]
-if DEBUG:
+TEST = False
+if TEST:
     INSTALLED_APPS.append('django_nose')
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-    # Tell nose to measure coverage on the 'foo' and 'bar' apps
     NOSE_ARGS = [
         '--with-coverage',
         '--cover-package=blog,contacts',
-        '--with-gae',
     ]
 
 CKEDITOR_UPLOAD_PATH = "ck-uploads/"
@@ -129,11 +132,11 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+USE_I18N = False
 
-USE_L10N = True
+USE_L10N = False
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -153,12 +156,6 @@ STATICFILES_FINDERS = (
 )
 
 CSP_DEFAULT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval")
-
-if not DEBUG:
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
-    SECURE_FRAME_DENY = True
-    SECURE_HSTS_SECONDS = 31536000
-    SECURE_SSL_REDIRECT = True
+CSP_CONNECT_SRC = ("'self'", "googe.com", "youtube.com", "twitter.com", "facebook.com")
 
 from djangae.contrib.gauth.settings import *

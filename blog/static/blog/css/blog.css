@@ -148,6 +148,12 @@ hr.small {
 .intro-header.tag {
   background-image: url('../img/tag-bg.jpg');
 }
+.intro-header.contacts {
+  background-image: url('../img/contacts-bg.jpg');
+}
+.intro-header.add-post, .intro-header.edit-post {
+  background-image: url('../img/postadd-bg.jpg');
+}
 .intro-header {
   background: no-repeat center center;
   background-color: #808080;

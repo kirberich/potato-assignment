@@ -28,6 +28,6 @@ urlpatterns = patterns(
     url(r'^tags/$', TagsView.as_view(), name="tags"),
     url(r'^tags/(?P<slug>[-\w]+)/$', TagView.as_view(), name="tag"),
     url(r'^tags-json/$', JSONTagsView.as_view(), name="tags-json"),
-    #url(r'^posts-json/$', JSONPostsView.as_view(), name="posts-json"),
+    # url(r'^posts-json/$', JSONPostsView.as_view(), name="posts-json"),
     url(r'^comments/add-new/$', JSONCommentAdd.as_view(), name="add-comment"),
 )

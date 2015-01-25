@@ -37,19 +37,19 @@ class BaseModel(models.Model):
         """ This ensure uniqueness. Have to do here cause
             this method was never called if unique=True is set
         """
-        max_length = self._meta.get_field("slug").max_length
+        if not self.id:
+            max_length = self._meta.get_field("slug").max_length
+            new = orig = slugify(self.title)[:max_length]
+            for x in itertools.count(1):
+                if not self.__class__.objects.filter(slug=new).exists():
+                    break
 
-        new = orig = slugify(self.title)[:max_length]
-        for x in itertools.count(1):
-            if not self.__class__.objects.filter(slug=new).exists():
-                break
-
-            new = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
-        self.slug = new
+                new = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+            self.slug = new
         super(BaseModel, self).save(*args, **kwargs)
         # Dirty hack to redirect only if the content has really been created
         # in the datastore and not only queued)
-        while not self.__class__.objects.filter(slug=new).exists():
+        while not self.__class__.objects.filter(slug=self.slug).exists():
             pass
 
 
@@ -87,8 +87,10 @@ class Post(BaseModel):
     text = RichTextField()
     image = models.ImageField(upload_to="post_images",
                               validators=[ImageSize(min_w=1900,
-                                                    max_w=1900), ],
-                              help_text="Must be 1900px X 100-200px",
+                                                    max_w=1900,
+                                                    min_h=100,
+                                                    max_h=500)],
+                              help_text="Must be 1900px X 100-500px",
                               blank=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -111,10 +113,7 @@ class Post(BaseModel):
         """
         elems = [self.title, self.subtitle, self.text, ]
         tags = [unicode(t.title) for t in self.tags.all()]
-        comments = itertools.chain(*[(unicode(c.title), unicode(c.title))
-                                   for c in self.comments.all()])
         elems.extend(tags)
-        elems.extend(comments)
         return unicode(" ".join(elems))
 
     def index_tags(self, sep="\t"):

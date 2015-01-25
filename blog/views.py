@@ -53,6 +53,7 @@ class PostsView(ListView):
         query = self.request.GET.get('q', "").strip()
         filters = self.request.GET.getlist('f', [])
         self.search_results["q"] = query
+        self.search_results["f"] = filters
         self.search_results.update(search(q=query, filters=filters,
                                    query_string=self.request.GET,))
         hits = self.search_results.pop("hits")
@@ -116,7 +117,7 @@ class TagsView(ListView):
     model = Tag
     context_object_name = "tags"
     template_name = "blog/tags.html"
-    paginate_by = 2
+    paginate_by = 5
 
 
 class TagView(DetailView):
@@ -184,7 +185,7 @@ class JSONCommentAdd(JSONView, BaseCreateView):
                                         success=True)
         return self.render_to_response(context)
 
-    @method_decorator(requires_csrf_token)
+    @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
         return super(JSONCommentAdd, self).dispatch(*args, **kwargs)
 

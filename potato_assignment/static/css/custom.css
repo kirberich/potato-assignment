@@ -48,10 +48,13 @@ h1 .label a {
 {
     margin:5px 0px;
 }
+.actions .btn
+{
+  width: 150px;
+}
 .btn
 {
     padding: 6px 12px;
-    width: 150px;
     line-height: 20px;
     text-align: middle;
 }

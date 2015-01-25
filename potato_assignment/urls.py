@@ -21,8 +21,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor.urls')),
     url(r'^contact-us/', include('contacts.urls')),
-    url(r'^sitemap\.xml$', sitemap, {"sitemaps": sitemaps},
-        name='django.contrib.sitemaps.views.sitemap'),
+    url(r'^sitemap\.xml$', sitemap, {"sitemaps": sitemaps}, name='sitemap'),
     url(r'^gauth/', include('djangae.contrib.gauth.urls')),
     url(r'^', include('blog.urls')),
 )
