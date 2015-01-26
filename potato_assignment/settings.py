@@ -23,7 +23,7 @@ from .boot import get_app_config
 SECRET_KEY = get_app_config().secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 COMPRESS_ENABLED = False
 TEMPLATE_DEBUG = True
 
@@ -156,6 +156,6 @@ STATICFILES_FINDERS = (
 )
 
 CSP_DEFAULT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval")
-CSP_CONNECT_SRC = ("'self'", "googe.com", "youtube.com", "twitter.com", "facebook.com")
-
+CSP_CONNECT_SRC = ("'self'", "googe.com", "youtube.com", "twitter.com", "facebook.com", "ggpht.com")
+CSP_IMG_SRC = ("'self'", "*.ggpht.com")
 from djangae.contrib.gauth.settings import *

@@ -10,7 +10,7 @@
        <h4 class="modal-title">Delete {{ object.title }}</h4>
   </div>			<!-- /modal-header -->
   <div class="modal-body">
-  <p>Are you absolutally sure you want to delete {{ object.title }} and all the related comments? It will not be possible to recover it anymore. Think twice please</p>
+  <p>Are you absolutely sure you want to delete {{ object.title }} and all the related comments? It will not be possible to recover it anymore. Think twice please</p>
   </div>			<!-- /modal-body -->
   <div class="modal-footer">
     <form action="{% url 'post-delete' post.slug %}" method="post">

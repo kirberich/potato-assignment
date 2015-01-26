@@ -10,7 +10,18 @@
           <div class="site-heading">
             <h1>Potato assignment Blog</h1>
             <hr class="small">
-            <span class="subheading">A showoff of what I can do</span>
+            <span class="subheading">by Matteo Parrucci</span>
+            <p>
+            <form method="get" role="search" action="{% url 'posts-search' %}">
+              <div class="form-group">
+                <div class="input-group">
+                  <input name="q" type="text" class="hp-search form-control" placeholder="Search for..."/>
+                  <span class="input-group-btn">
+                    <button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                  </span>
+                </div>
+              </div>
+            </form></p>
           </div>
         </div>
       </div>
@@ -20,25 +31,22 @@
 
 {% block content %}
   <div class="container">
+    {% for post in posts %}
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          {% include 'blog/include/post_actions.html' %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          {% include 'blog/include/post_in_listing.html' %}
+        </div>
+      </div>
+    {% empty %}
+      <p>Sorry, no post in this blog.</p>
+    {% endfor %}
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <form method="get" role="search" action="{% url 'posts-search' %}">
-          <div class="form-group">
-            <div class="row">
-              <div class="input-group">
-                <input name="q" type="text" class="hp-search form-control" placeholder="Search for..."/>
-                <span class="input-group-btn">
-                  <button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                </span>
-              </div>
-            </div>
-          </div>
-        </form>
-    	  {% for post in posts %}
-          {% include 'blog/include/post_in_listing.html' %}
-          {% empty %}
-            <p>Sorry, no post in this blog.</p>
-    	  {% endfor %}
         {% include 'blog/include/pagination.html' %}
       </div>
     </div>

@@ -27,22 +27,43 @@
 
 {% block content %}
   <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        {% for tag in tags %}
+    {% for tag in tags %}
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           <h1>Posted under
             <a href="{{ tag.get_absolute_url }}">
               <span class="tag label label-primary">#{{ tag.title }}</span>
             </a>
           </h1>
-          {% for post in tag.posts.all %}
+        </div>
+      </div>
+      {% for post in tag.posts.all %}
+        <!--div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            {% include 'blog/include/post_actions.html' %}
+          </div>
+        </div-->
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             {% include 'blog/include/post_in_listing.html' %}
-            {% empty %}
-            No posts under this tag
-          {% endfor %}
-        {% empty %}
-        <p>Sorry, no tags in this blog.</p>
-        {% endfor %}
+          </div>
+        </div>
+      {% empty %}
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <p>No posts under this tag</p>
+          </div>
+        </div>
+      {% endfor %}
+    {% empty %}
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <p>Sorry, no tags in this blog.</p>
+        </div>
+      </div>
+    {% endfor %}
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         {% include 'blog/include/pagination.html' %}
       </div>
     </div>
