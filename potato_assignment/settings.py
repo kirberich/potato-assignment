@@ -23,9 +23,9 @@ from .boot import get_app_config
 SECRET_KEY = get_app_config().secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-COMPRESS_ENABLED = False
-TEMPLATE_DEBUG = True
+DEBUG = False
+COMPRESS_ENABLED = True
+TEMPLATE_DEBUG = False
 
 ADMINS = (('Matteo Parrucci', 'parruc@gmail.com'),)
 

@@ -2,9 +2,9 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import requires_csrf_token
 from django.views.generic.edit import FormView
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 from google.appengine.api import mail
 
@@ -48,6 +48,6 @@ class ContactView(FormView):
                                  us about the error. Thanks")
         return super(ContactView, self).form_valid(form)
 
-    @method_decorator(requires_csrf_token)
+    @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
         return super(ContactView, self).dispatch(*args, **kwargs)
